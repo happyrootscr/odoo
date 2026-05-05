@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- ══════════════════════════════════════════════════════════════════
+             BENCHMARK COMPETIDORES USA — Hoja Benchmark del Excel v9 (abril 2026)
+             Datos verificados en campo (Miami) y online.
+             ══════════════════════════════════════════════════════════════════ -->
+
+        <!-- ── TIER 1 — PREMIUM NATURAL CHANNEL ─────────────────────────── -->
+        <record id="benchmark_artisan_tropic_cassava_sea_salt" model="hr.benchmark.competitor">
+            <field name="name">Artisan Tropic</field>
+            <field name="product_name">Cassava Strips Sea Salt</field>
+            <field name="origin_country">Colombia</field>
+            <field name="tier">1</field>
+            <field name="channel">whole_foods</field>
+            <field name="weight_oz">4.5</field>
+            <field name="msrp_usd">4.99</field>
+            <field name="is_direct_competitor">True</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Whole Foods shelf price abril 2026</field>
+            <field name="notes">
+                COMPETENCIA DIRECTA PREMIUM. Corte largo (strips) vs Happy Roots redondo.
+                Mismo canal, mismo origen tropical, mismo concepto.
+                HR ventaja: precio ~25% menor al mismo MSRP, o mismo precio con más margen.
+            </field>
+        </record>
+
+        <record id="benchmark_artisan_tropic_cassava_jalapeno" model="hr.benchmark.competitor">
+            <field name="name">Artisan Tropic</field>
+            <field name="product_name">Cassava Strips Jalapeño</field>
+            <field name="origin_country">Colombia</field>
+            <field name="tier">1</field>
+            <field name="channel">whole_foods</field>
+            <field name="weight_oz">4.5</field>
+            <field name="msrp_usd">5.49</field>
+            <field name="is_direct_competitor">True</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Whole Foods shelf price abril 2026</field>
+            <field name="notes">Sabor con margen extra por especia picante. HR puede competir con Chile Limón.</field>
+        </record>
+
+        <record id="benchmark_artisan_tropic_plantain" model="hr.benchmark.competitor">
+            <field name="name">Artisan Tropic</field>
+            <field name="product_name">Plantain Strips Sea Salt</field>
+            <field name="origin_country">Colombia</field>
+            <field name="tier">1</field>
+            <field name="channel">sprouts</field>
+            <field name="weight_oz">4.5</field>
+            <field name="msrp_usd">4.99</field>
+            <field name="is_direct_competitor">True</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Sprouts shelf price abril 2026</field>
+            <field name="notes">Competencia directa plátano premium. HR Plátano 126g compite en este tier.</field>
+        </record>
+
+        <record id="benchmark_barnana_organic" model="hr.benchmark.competitor">
+            <field name="name">Barnana</field>
+            <field name="product_name">Organic Plantain Chips</field>
+            <field name="origin_country">Ecuador</field>
+            <field name="tier">1</field>
+            <field name="channel">whole_foods</field>
+            <field name="weight_oz">4.0</field>
+            <field name="msrp_usd">4.99</field>
+            <field name="is_direct_competitor">True</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Whole Foods shelf price abril 2026</field>
+            <field name="notes">
+                Certificado orgánico → precio premium por cert. USDA Organic.
+                HR no tiene certif. orgánico aún → diferenciarse por mix de tubérculos y sabores.
+            </field>
+        </record>
+
+        <record id="benchmark_plant_snacks" model="hr.benchmark.competitor">
+            <field name="name">Plant Snacks</field>
+            <field name="product_name">Cassava Root Crunchy Cheddar</field>
+            <field name="origin_country">Colombia</field>
+            <field name="tier">1</field>
+            <field name="channel">thrive</field>
+            <field name="weight_oz">5.0</field>
+            <field name="msrp_usd">4.99</field>
+            <field name="is_direct_competitor">True</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Thrive Market online abril 2026</field>
+            <field name="notes">Cassava con sabores queso. Competencia en canal natural pero sabores distintos.</field>
+        </record>
+
+        <record id="benchmark_bare_beet" model="hr.benchmark.competitor">
+            <field name="name">Bare</field>
+            <field name="product_name">Beet Chips</field>
+            <field name="origin_country">USA</field>
+            <field name="tier">1</field>
+            <field name="channel">whole_foods</field>
+            <field name="weight_oz">2.2</field>
+            <field name="msrp_usd">4.49</field>
+            <field name="is_direct_competitor">False</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Whole Foods shelf price abril 2026</field>
+            <field name="notes">
+                Formato pequeño en mismo shelf. No yuca/plátano → competencia indirecta.
+                Referencia de precio/oz en canal premium: $2.04/oz (muy alto para HR).
+            </field>
+        </record>
+
+        <!-- ── TIER 2 — ETHNIC / LATINO CHANNEL ─────────────────────────── -->
+        <record id="benchmark_soldanza_cassava" model="hr.benchmark.competitor">
+            <field name="name">Soldanza</field>
+            <field name="product_name">Cassava Chips Original</field>
+            <field name="origin_country">Costa Rica</field>
+            <field name="tier">2</field>
+            <field name="channel">sedanos</field>
+            <field name="channel_notes">Sedanos, Target</field>
+            <field name="weight_oz">1.6</field>
+            <field name="msrp_usd">1.19</field>
+            <field name="is_direct_competitor">True</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Sedanos shelf price abril 2026</field>
+            <field name="notes">
+                COMPETENCIA DIRECTA — mismo origen (Sarapiquí, misma zona que ADM).
+                Formato muy pequeño y precio barato. HR no debe competir en precio con Soldanza.
+                HR ventaja: formato más grande (126g vs 45g), sabores diferenciados, posicionamiento premium.
+            </field>
+        </record>
+
+        <record id="benchmark_soldanza_platano" model="hr.benchmark.competitor">
+            <field name="name">Soldanza</field>
+            <field name="product_name">Plantain Chips Lightly Salted</field>
+            <field name="origin_country">Costa Rica</field>
+            <field name="tier">2</field>
+            <field name="channel">walmart</field>
+            <field name="channel_notes">Sedanos, Walmart</field>
+            <field name="weight_oz">2.5</field>
+            <field name="msrp_usd">1.49</field>
+            <field name="is_direct_competitor">True</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Walmart shelf price abril 2026</field>
+            <field name="notes">Competencia directa plátano. HR debe evitar posicionarse en este tier de precio.</field>
+        </record>
+
+        <record id="benchmark_mi_cosecha_yuca" model="hr.benchmark.competitor">
+            <field name="name">Mi Cosecha</field>
+            <field name="product_name">Yuca (Cassava) Chips</field>
+            <field name="origin_country">Costa Rica</field>
+            <field name="tier">2</field>
+            <field name="channel">walmart</field>
+            <field name="channel_notes">Instacart, Walmart</field>
+            <field name="weight_oz">5.0</field>
+            <field name="msrp_usd">2.99</field>
+            <field name="is_direct_competitor">True</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Instacart/Walmart precio abril 2026</field>
+            <field name="notes">
+                COMPETENCIA DIRECTA — origen Costa Rica igual que HR.
+                Mismo tamaño 142g ≈ 126g. Precio $2.99 → HR Yuca 126g MSRP $3.15 = 5% premium.
+                HR puede justificar premium por sabores diferenciados y posicionamiento.
+            </field>
+        </record>
+
+        <record id="benchmark_turbana" model="hr.benchmark.competitor">
+            <field name="name">Turbana</field>
+            <field name="product_name">Plantain Chips Original</field>
+            <field name="origin_country">Colombia</field>
+            <field name="tier">2</field>
+            <field name="channel">amazon</field>
+            <field name="weight_oz">2.5</field>
+            <field name="msrp_usd">3.29</field>
+            <field name="is_direct_competitor">True</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Amazon precio abril 2026</field>
+            <field name="notes">Marca plátano establecida en canal Amazon. Referencia para PLT126-SAL DTC.</field>
+        </record>
+
+        <record id="benchmark_chifles" model="hr.benchmark.competitor">
+            <field name="name">Chifles</field>
+            <field name="product_name">Plantain Chips</field>
+            <field name="origin_country">Ecuador</field>
+            <field name="tier">2</field>
+            <field name="channel">walmart</field>
+            <field name="weight_oz">4.0</field>
+            <field name="msrp_usd">3.49</field>
+            <field name="is_direct_competitor">True</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Walmart shelf price abril 2026</field>
+            <field name="notes">Marca ethnic establecida. Referencia precio plátano canal convencional.</field>
+        </record>
+
+        <record id="benchmark_goya" model="hr.benchmark.competitor">
+            <field name="name">Goya</field>
+            <field name="product_name">Cassava Yuca Chips</field>
+            <field name="origin_country">USA/PR</field>
+            <field name="tier">2</field>
+            <field name="channel">walmart</field>
+            <field name="channel_notes">Walmart, Amazon</field>
+            <field name="weight_oz">4.0</field>
+            <field name="msrp_usd">3.79</field>
+            <field name="is_direct_competitor">True</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Amazon/Walmart precio abril 2026</field>
+            <field name="notes">
+                Marca grande ethnic con shelf presence masiva. HR no puede competir en volumen.
+                Diferenciarse por: origen CR premium, sabores únicos, empaque artesanal premium.
+            </field>
+        </record>
+
+        <!-- ── VALIDACIÓN DE CAMPO MIAMI (Publix / observación directa) ─── -->
+        <record id="benchmark_chifles_publix" model="hr.benchmark.competitor">
+            <field name="name">Chifles</field>
+            <field name="product_name">Cassava Chips (Publix regular)</field>
+            <field name="origin_country">Ecuador</field>
+            <field name="tier">2</field>
+            <field name="channel">publix</field>
+            <field name="weight_oz">8.5</field>
+            <field name="msrp_usd">5.29</field>
+            <field name="is_direct_competitor">True</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Publix precio regular · observación de campo Miami abril 2026</field>
+            <field name="notes">Formato grande en Publix. Referencia para precio yuca en supermercado convencional Miami.</field>
+        </record>
+
+        <record id="benchmark_mambo_publix" model="hr.benchmark.competitor">
+            <field name="name">Mambo</field>
+            <field name="product_name">Yuca Tostones Cassava</field>
+            <field name="origin_country">Colombia</field>
+            <field name="tier">1</field>
+            <field name="channel">publix</field>
+            <field name="weight_oz">3.53</field>
+            <field name="msrp_usd">4.29</field>
+            <field name="is_bogo">True</field>
+            <field name="is_direct_competitor">True</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Publix BOGO price · observación de campo Miami abril 2026</field>
+            <field name="notes">
+                Precio BOGO. Precio regular estimado ~$8.58 para 100g.
+                Posicionamiento premium yuca en Publix Miami: $1.22/oz → HR en rango.
+            </field>
+        </record>
+
+        <record id="benchmark_iselitas" model="hr.benchmark.competitor">
+            <field name="name">Iselitas</field>
+            <field name="product_name">Cassava Sour Cream / Onion</field>
+            <field name="origin_country">Colombia</field>
+            <field name="tier">2</field>
+            <field name="channel">publix</field>
+            <field name="channel_notes">Publix, Instacart</field>
+            <field name="weight_oz">5.0</field>
+            <field name="msrp_usd">4.19</field>
+            <field name="is_direct_competitor">True</field>
+            <field name="date_checked">2026-04-01</field>
+            <field name="source">Publix/Instacart precio abril 2026</field>
+            <field name="notes">
+                Cassava con Crema Cebolla — competencia directa con YUC126-CEB.
+                HR YUC126-CEB MSRP $3.15 vs Iselitas $4.19 = 25% más barato → oportunidad de subir precio.
+            </field>
+        </record>
+
+    </data>
+</odoo>

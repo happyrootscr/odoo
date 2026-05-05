@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         FORM VIEW — Combo (SKU × Sabor)
+         ═══════════════════════════════════════════════════════════════════ -->
+    <record id="view_hr_product_combo_form" model="ir.ui.view">
+        <field name="name">hr.product.combo.form</field>
+        <field name="model">hr.product.combo</field>
+        <field name="arch" type="xml">
+            <form string="Combo — SKU × Sabor">
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,active,discontinued"/>
+                    <button name="action_push_to_pricelists"
+                            type="object"
+                            string="↗ Sincronizar con Odoo Pricelists"
+                            class="btn-primary"
+                            attrs="{'invisible': [('product_id', '=', False)]}"/>
+                </header>
+                <sheet>
+                    <!-- Smart buttons -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_product"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-cube"
+                                attrs="{'invisible': [('product_id', '=', False)]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Producto Odoo</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <label for="internal_code" class="oe_edit_only"/>
+                        <h1>
+                            <field name="internal_code" class="oe_inline" style="color:#2c7a2c; font-weight:bold;"/>
+                            — <field name="name" class="oe_inline"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Identificación">
+                            <field name="base_id"/>
+                            <field name="seasoning_id"/>
+                            <field name="dosification_kg_per_bag"
+                                   help="Kg de condimento por bolsa. Ej: 0.07 = 7g por bolsa de 126g"/>
+                            <field name="format_weight_g" readonly="1"/>
+                            <field name="format_weight_oz" readonly="1" digits="[10,4]"/>
+                            <field name="bags_per_container" readonly="1"/>
+                        </group>
+                        <group string="Estrategia">
+                            <field name="channel_recommendation"/>
+                            <field name="product_id"/>
+                            <field name="notes"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <!-- ── DESGLOSE EXW ──────────────────────────── -->
+                        <page string="🏭 Desglose EXW" name="exw">
+                            <div class="alert alert-secondary" role="alert">
+                                <strong>EXW (Ex Works)</strong> — Precio en planta ADM Sarapiquí.
+                                Incluye todos los costos de producción y empaque hasta que el producto sale de la fábrica.
+                            </div>
+                            <group>
+                                <group string="Componentes de costo (USD/bolsa)">
+                                    <field name="cost_maquila_usd" readonly="1" digits="[10,6]"
+                                           class="hr_computed_subtotal"/>
+                                    <field name="cost_bag_usd" readonly="1" digits="[10,6]"
+                                           class="hr_computed_subtotal"/>
+                                    <field name="cost_seasoning_usd" readonly="1" digits="[10,6]"
+                                           class="hr_computed_subtotal"/>
+                                    <field name="cost_box_usd" readonly="1" digits="[10,6]"
+                                           class="hr_computed_subtotal"/>
+                                    <field name="cost_pallet_usd" readonly="1" digits="[10,6]"
+                                           class="hr_computed_subtotal"/>
+                                </group>
+                                <group string="Precio EXW">
+                                    <field name="price_exw" readonly="1" digits="[10,6]"
+                                           class="hr_price_final" style="font-size:1.4em; font-weight:bold; color:#c0392b;"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- ── 3 INCOTERMS ───────────────────────────── -->
+                        <page string="🚢 FOB / DDP" name="incoterms">
+                            <div class="alert alert-secondary" role="alert">
+                                <strong>EXW → FOB → DDP</strong> — Cascada completa de precio hasta bodega Miami.
+                            </div>
+                            <group>
+                                <group string="Logística origen (USD/bolsa)">
+                                    <field name="logistics_origin_per_bag" readonly="1"
+                                           digits="[10,6]" class="hr_computed_subtotal"/>
+                                    <field name="price_fob" readonly="1" digits="[10,6]"
+                                           class="hr_price_fob" style="font-weight:bold;"/>
+                                    <field name="delta_fob_exw" readonly="1" digits="[10,6]"/>
+                                </group>
+                                <group string="Internacional + Destino + Aranceles (USD/bolsa)">
+                                    <field name="logistics_intl_per_bag" readonly="1"
+                                           digits="[10,6]" class="hr_computed_subtotal"/>
+                                    <field name="customs_per_bag" readonly="1"
+                                           digits="[10,6]" class="hr_computed_subtotal"/>
+                                    <field name="delta_ddp_fob" readonly="1" digits="[10,6]"/>
+                                    <field name="price_ddp" readonly="1" digits="[10,6]"
+                                           class="hr_price_final" style="font-size:1.4em; font-weight:bold; color:#c0392b;"/>
+                                </group>
+                            </group>
+                            <separator string="Métricas por contenedor (40HC)"/>
+                            <group>
+                                <group>
+                                    <field name="container_total_exw" readonly="1" digits="[10,2]"/>
+                                    <field name="container_total_fob" readonly="1" digits="[10,2]"/>
+                                    <field name="container_total_ddp" readonly="1" digits="[10,2]"
+                                           class="hr_computed_subtotal"/>
+                                    <field name="container_ddp_per_kg" readonly="1" digits="[10,4]"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- ── PRECIOS DE VENTA ──────────────────────── -->
+                        <page string="💰 Precios de venta" name="selling_prices">
+                            <group string="Canal 1 — Direct-to-Retailer (Whole Foods, Sprouts)">
+                                <group>
+                                    <field name="price_wholesale_direct" readonly="1"
+                                           digits="[10,6]" class="hr_price_wholesale"
+                                           style="font-size:1.2em; font-weight:bold; color:#8e44ad;"/>
+                                    <field name="price_msrp" readonly="1" digits="[10,6]"
+                                           class="hr_price_final"
+                                           style="font-size:1.3em; font-weight:bold; color:#c0392b;"/>
+                                    <field name="margin_pct_direct" readonly="1"
+                                           widget="percentage" digits="[6,2]"/>
+                                    <field name="price_per_oz_msrp" readonly="1" digits="[10,4]"/>
+                                    <field name="vs_benchmark_per_oz" readonly="1" digits="[10,4]"/>
+                                    <field name="benchmark_status" readonly="1"/>
+                                </group>
+                            </group>
+                            <group string="Canal 2 — Vía Distribuidor (UNFI / KeHE)">
+                                <group>
+                                    <field name="price_wholesale_distributor" readonly="1"
+                                           digits="[10,6]" class="hr_price_wholesale"/>
+                                    <field name="margin_pct_distributor" readonly="1"
+                                           widget="percentage" digits="[6,2]"/>
+                                </group>
+                            </group>
+                            <group string="Canal 3 — DTC (Shopify / Amazon)">
+                                <group>
+                                    <field name="price_dtc" readonly="1" digits="[10,6]"/>
+                                    <field name="profit_dtc" readonly="1" digits="[10,6]"
+                                           class="hr_computed_subtotal"/>
+                                    <field name="margin_pct_dtc" readonly="1"
+                                           widget="percentage" digits="[6,2]"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         LIST VIEW — Resumen ejecutivo (equivale a la hoja "Resumen")
+         ═══════════════════════════════════════════════════════════════════ -->
+    <record id="view_hr_product_combo_list" model="ir.ui.view">
+        <field name="name">hr.product.combo.list</field>
+        <field name="model">hr.product.combo</field>
+        <field name="arch" type="xml">
+            <list string="Resumen Ejecutivo — 10 Combos"
+                  decoration-success="benchmark_status == 'competitive'"
+                  decoration-warning="benchmark_status == 'below_market'"
+                  decoration-info="benchmark_status == 'above_market'"
+                  decoration-muted="state == 'discontinued'">
+                <field name="sequence" widget="handle"/>
+                <field name="internal_code" optional="show"/>
+                <field name="name"/>
+                <field name="base_id" optional="show"/>
+                <field name="seasoning_id" optional="show"/>
+                <field name="format_weight_g" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'active'"
+                       decoration-warning="state == 'draft'"
+                       decoration-danger="state == 'discontinued'"/>
+                <!-- Cascada de precios -->
+                <field name="price_exw" string="EXW" digits="[10,4]"
+                       optional="show" class="hr_price_exw"/>
+                <field name="price_fob" string="FOB Limón" digits="[10,4]"
+                       optional="show"/>
+                <field name="price_ddp" string="DDP Miami" digits="[10,4]"
+                       class="hr_price_ddp" optional="show"/>
+                <field name="price_wholesale_direct" string="Wholesale HR" digits="[10,4]"
+                       class="hr_price_wholesale" optional="show"/>
+                <field name="price_msrp" string="MSRP" digits="[10,4]"
+                       class="hr_price_msrp" optional="show"/>
+                <field name="price_per_oz_msrp" string="$/oz" digits="[10,4]"
+                       optional="show"/>
+                <field name="vs_benchmark_per_oz" string="vs Benchmark $/oz" digits="[10,4]"
+                       optional="show"/>
+                <field name="margin_pct_direct" string="Margen directo"
+                       widget="percentage" digits="[6,2]" optional="show"/>
+                <field name="margin_pct_distributor" string="Margen dist."
+                       widget="percentage" digits="[6,2]" optional="show"/>
+                <field name="margin_pct_dtc" string="Margen DTC"
+                       widget="percentage" digits="[6,2]" optional="show"/>
+                <field name="channel_recommendation" optional="show"/>
+                <field name="benchmark_status" column_invisible="1"/>
+                <field name="state" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- SEARCH VIEW -->
+    <record id="view_hr_product_combo_search" model="ir.ui.view">
+        <field name="name">hr.product.combo.search</field>
+        <field name="model">hr.product.combo</field>
+        <field name="arch" type="xml">
+            <search string="Buscar combos">
+                <field name="name"/>
+                <field name="internal_code"/>
+                <field name="base_id"/>
+                <field name="seasoning_id"/>
+                <separator/>
+                <filter name="active" string="Activos" domain="[('state','=','active')]"/>
+                <filter name="draft" string="Borradores" domain="[('state','=','draft')]"/>
+                <filter name="discontinued" string="Descontinuados"
+                        domain="[('state','=','discontinued')]"/>
+                <separator/>
+                <filter name="below_market" string="Precio bajo vs mercado"
+                        domain="[('benchmark_status','=','below_market')]"/>
+                <filter name="without_product" string="Sin producto Odoo vinculado"
+                        domain="[('product_id','=',False)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_base" string="SKU Base"
+                            context="{'group_by': 'base_id'}"/>
+                    <filter name="group_seasoning" string="Condimento"
+                            context="{'group_by': 'seasoning_id'}"/>
+                    <filter name="group_state" string="Estado"
+                            context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="action_hr_product_combo" model="ir.actions.act_window">
+        <field name="name">Combos — Resumen Ejecutivo</field>
+        <field name="res_model">hr.product.combo</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay combos registrados
+            </p>
+            <p>
+                Los combos son las combinaciones SKU × Sabor (Yuca 126g — Sal Marina, etc.)
+                con toda la cascada de precios EXW → FOB → DDP → Wholesale → MSRP.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_incoterm_quote">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="combo">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <t t-set="config" t-value="env['hr.pricing.config'].get_config()"/>
+
+                    <!-- ENCABEZADO PROFESIONAL -->
+                    <div class="row mb-4">
+                        <div class="col-7">
+                            <h1 style="color:#2c7a2c; font-family:Arial;">
+                                Cotización de Precio de Exportación
+                            </h1>
+                            <h3>Happy Roots</h3>
+                            <p style="color:#555;">
+                                Sarapiquí, Heredia, Costa Rica · Exportación a USA
+                            </p>
+                        </div>
+                        <div class="col-5 text-right">
+                            <p><strong>Fecha:</strong>
+                                <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d de %B de %Y')"/>
+                            </p>
+                            <p><strong>Cotización válida por:</strong> 30 días</p>
+                            <p style="color:#999; font-size:9px;">Confidencial</p>
+                        </div>
+                    </div>
+
+                    <!-- IDENTIFICACIÓN DEL PRODUCTO -->
+                    <div style="background:#2c7a2c; color:white; padding:10px 15px; border-radius:5px; margin-bottom:15px;">
+                        <h3 style="margin:0; color:white;">
+                            <t t-esc="combo.name"/>
+                        </h3>
+                        <p style="margin:3px 0 0 0; color:#d4f0d4;">
+                            Código: <t t-esc="combo.internal_code"/> ·
+                            Peso neto: <t t-esc="combo.format_weight_g"/>g
+                            (<t t-esc="'%.2f' % combo.format_weight_oz"/> oz) ·
+                            Bolsas por contenedor 40HC: <t t-esc="combo.bags_per_container"/>
+                        </p>
+                    </div>
+
+                    <!-- TABLA DE PRECIOS 3 INCOTERMS -->
+                    <h4>Precios por Incoterm (USD/bolsa)</h4>
+                    <table class="table table-bordered" style="font-size:12px;">
+                        <thead>
+                            <tr>
+                                <th style="background:#555; color:white; width:25%;">Incoterm</th>
+                                <th style="background:#555; color:white; width:15%; text-align:right;">Precio USD/bolsa</th>
+                                <th style="background:#555; color:white; width:15%; text-align:right;">Precio USD/caja</th>
+                                <th style="background:#555; color:white; width:20%; text-align:right;">Precio USD/contenedor</th>
+                                <th style="background:#555; color:white; width:25%;">Incluye</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background:#e8f5e9;">
+                                <td>
+                                    <strong style="color:#2c7a2c;">EXW</strong><br/>
+                                    <small>Ex Works Sarapiquí</small>
+                                </td>
+                                <td style="text-align:right; font-weight:bold; color:#2c7a2c; font-size:1.1em;">
+                                    $<t t-esc="'%.4f' % combo.price_exw"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    $<t t-esc="'%.4f' % (combo.price_exw * combo.base_id.bags_per_box)"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    $<t t-esc="'%.2f' % combo.container_total_exw"/>
+                                </td>
+                                <td style="font-size:10px; color:#555;">
+                                    Producto + empaque en planta ADM.
+                                    El comprador paga todo el transporte.
+                                </td>
+                            </tr>
+                            <tr style="background:#e3f2fd;">
+                                <td>
+                                    <strong style="color:#2980b9;">FOB</strong><br/>
+                                    <small>Free On Board Puerto Limón</small>
+                                </td>
+                                <td style="text-align:right; font-weight:bold; color:#2980b9; font-size:1.1em;">
+                                    $<t t-esc="'%.4f' % combo.price_fob"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    $<t t-esc="'%.4f' % (combo.price_fob * combo.base_id.bags_per_box)"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    $<t t-esc="'%.2f' % combo.container_total_fob"/>
+                                </td>
+                                <td style="font-size:10px; color:#555;">
+                                    EXW + trucking interno + handling Limón +
+                                    documentos exportación CAFTA-DR.
+                                </td>
+                            </tr>
+                            <tr style="background:#fce4ec;">
+                                <td>
+                                    <strong style="color:#c0392b;">DDP</strong><br/>
+                                    <small>Delivered Duty Paid Miami</small>
+                                </td>
+                                <td style="text-align:right; font-weight:bold; color:#c0392b; font-size:1.3em;">
+                                    $<t t-esc="'%.4f' % combo.price_ddp"/>
+                                </td>
+                                <td style="text-align:right; font-weight:bold;">
+                                    $<t t-esc="'%.4f' % (combo.price_ddp * combo.base_id.bags_per_box)"/>
+                                </td>
+                                <td style="text-align:right; font-weight:bold;">
+                                    $<t t-esc="'%.2f' % combo.container_total_ddp"/>
+                                </td>
+                                <td style="font-size:10px; color:#555;">
+                                    Todo incluido hasta bodega Miami:
+                                    FOB + flete marítimo + seguro +
+                                    trucking destino + aranceles US.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- NOTAS DE ARANCELES -->
+                    <div class="alert alert-secondary" style="font-size:10px; margin-top:10px;">
+                        <strong>Aranceles USA aplicados en precio DDP:</strong>
+                        · CAFTA-DR: <t t-esc="'%.0f' % (config.cafta_duty_pct * 100)"/>% (origen Costa Rica)
+                        · HMF: <t t-esc="'%.3f' % (config.hmf_pct * 100)"/>%
+                        · Section 122:
+                        <t t-if="config.section_122_active">
+                            <t t-esc="'%.0f' % (config.section_122_pct * 100)"/>% (vigente hasta julio 2026)
+                        </t>
+                        <t t-else="">0% (vencida)</t>
+                        · HTS: <t t-esc="config.hts_code"/>
+                        · Broker + ISF + FDA + Bond: USD
+                        <t t-esc="'%.0f' % config.fixed_fees_per_entry_usd"/>
+                    </div>
+
+                    <!-- CONDICIONES COMERCIALES -->
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <h5>Condiciones de pago</h5>
+                            <ul style="font-size:11px;">
+                                <li>Forma de pago: A negociar (T/T anticipado o carta de crédito)</li>
+                                <li>Moneda: USD</li>
+                                <li>Validez: 30 días desde fecha de cotización</li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <h5>Notas de producto</h5>
+                            <ul style="font-size:11px;">
+                                <li>Maquilado por ADM (Alimentos Don Mariano S.A.), Sarapiquí</li>
+                                <li>Condimento: <t t-esc="combo.seasoning_id.name"/>
+                                    (Maluquer, certificado BRC)</li>
+                                <li>Empaque: bolsa laminada BOPP MATE, caja de cartón</li>
+                                <li>CAFTA-DR activo: certificado de origen incluido</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- FIRMA -->
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <div style="border-top:1px solid #333; padding-top:10px; margin-top:40px;">
+                                <p style="margin:0;"><strong>Autorizado por</strong></p>
+                                <p style="margin:0; color:#555;">Happy Roots</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div style="border-top:1px solid #333; padding-top:10px; margin-top:40px;">
+                                <p style="margin:0;"><strong>Aceptado por</strong></p>
+                                <p style="margin:0; color:#555;">Nombre / Empresa compradora</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PIE -->
+                    <div class="mt-3" style="border-top:1px solid #ccc; padding-top:8px; font-size:9px; color:#999; text-align:center;">
+                        Generado con Happy Roots Pricing Engine (Odoo 19 Community) ·
+                        <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+</odoo>

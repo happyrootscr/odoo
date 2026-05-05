@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- ══════════════════════════════════════════════════════════════════
+             CONDIMENTOS MALUQUER — 7 sabores del portafolio Happy Roots
+             Fuente: Cotización Maluquer #26138 · 18-nov-2025
+             Presentación: Saco 25 kg · vigencia 18-dic-2025 · contado
+             ══════════════════════════════════════════════════════════════════ -->
+
+        <record id="seasoning_sal_marina" model="hr.seasoning">
+            <field name="name">Sal Marina</field>
+            <field name="code"></field>
+            <field name="price_per_kg_usd">0.30</field>
+            <field name="is_confirmed">True</field>
+            <field name="quotation_ref">Proxy — sal refinada ₡150/kg</field>
+            <field name="quotation_date">2026-04-01</field>
+            <field name="presentation">Granel · sal refinada estándar</field>
+            <field name="notes">
+                Sal base incluida en precio de maquila ADM. Costo como condimento especial muy bajo.
+                Proxy: $0.30/kg equivale a ₡136.5/kg al TC de ₡455.
+            </field>
+        </record>
+
+        <record id="seasoning_ajo_rostizado" model="hr.seasoning">
+            <field name="name">Ajo Rostizado</field>
+            <field name="code"></field>
+            <field name="price_per_kg_usd">7.50</field>
+            <field name="is_confirmed">False</field>
+            <field name="quotation_ref">SUPUESTO — cotizar Maluquer</field>
+            <field name="quotation_date">2026-04-01</field>
+            <field name="presentation">Saco 25 kg · contado sin crédito</field>
+            <field name="notes">
+                SUPUESTO — precio estimado. PENDIENTE: solicitar cotización formal a Maluquer.
+                Contacto Maluquer: cotizacion #26138 como referencia para nueva oferta.
+            </field>
+        </record>
+
+        <record id="seasoning_crema_cebolla" model="hr.seasoning">
+            <field name="name">Crema de Cebolla</field>
+            <field name="code">72889</field>
+            <field name="price_per_kg_usd">11.10</field>
+            <field name="is_confirmed">True</field>
+            <field name="quotation_ref">Maluquer #26138 · Código 72889 · CREMA CEBOLLA MD</field>
+            <field name="quotation_date">2025-11-18</field>
+            <field name="valid_until">2025-12-18</field>
+            <field name="presentation">Saco 25 kg · vigencia 18-dic-2025 · contado sin crédito</field>
+            <field name="notes">
+                Precio CONFIRMADO Maluquer #26138. El condimento más caro del portafolio.
+                Dosificación 7% → mayor impacto en margen por sabor.
+                Renovar cotización antes del primer embarque (vigencia vencida).
+            </field>
+        </record>
+
+        <record id="seasoning_sal_limon" model="hr.seasoning">
+            <field name="name">Sal y Limón</field>
+            <field name="code">72656</field>
+            <field name="price_per_kg_usd">5.90</field>
+            <field name="is_confirmed">True</field>
+            <field name="quotation_ref">Maluquer #26138 · Código 72656 · SAL &amp; LIMON GF V2</field>
+            <field name="quotation_date">2025-11-18</field>
+            <field name="valid_until">2025-12-18</field>
+            <field name="presentation">Saco 25 kg · vigencia 18-dic-2025 · contado sin crédito</field>
+            <field name="notes">Precio CONFIRMADO Maluquer #26138. Sabor perfil Latino/Hispanic market.</field>
+        </record>
+
+        <record id="seasoning_chile_limon" model="hr.seasoning">
+            <field name="name">Chile Limón</field>
+            <field name="code">72018</field>
+            <field name="price_per_kg_usd">6.90</field>
+            <field name="is_confirmed">True</field>
+            <field name="quotation_ref">Maluquer #26138 · Código 72018 · CHILE NATURAL V2</field>
+            <field name="quotation_date">2025-11-18</field>
+            <field name="valid_until">2025-12-18</field>
+            <field name="presentation">Saco 25 kg · vigencia 18-dic-2025 · contado sin crédito</field>
+            <field name="notes">Precio CONFIRMADO Maluquer #26138. Sabor para canal Latino, perfil picante.</field>
+        </record>
+
+        <record id="seasoning_mediterraneo" model="hr.seasoning">
+            <field name="name">Mediterráneo</field>
+            <field name="code">72721</field>
+            <field name="price_per_kg_usd">9.90</field>
+            <field name="is_confirmed">True</field>
+            <field name="quotation_ref">Maluquer #26138 · Código 72721 · MEDITERRANEO</field>
+            <field name="quotation_date">2025-11-18</field>
+            <field name="valid_until">2025-12-18</field>
+            <field name="presentation">Saco 25 kg · vigencia 18-dic-2025 · contado sin crédito</field>
+            <field name="notes">
+                Precio CONFIRMADO Maluquer #26138. Sabor diferenciador — rosemary, herbs.
+                Aplica a Mixto 126g y Mixto 340g.
+            </field>
+        </record>
+
+        <record id="seasoning_romero_mantequilla" model="hr.seasoning">
+            <field name="name">Romero Mantequilla</field>
+            <field name="code"></field>
+            <field name="price_per_kg_usd">9.50</field>
+            <field name="is_confirmed">False</field>
+            <field name="quotation_ref">SUPUESTO — cotizar Maluquer</field>
+            <field name="quotation_date">2026-04-01</field>
+            <field name="presentation">Saco 25 kg · contado sin crédito</field>
+            <field name="notes">
+                SUPUESTO — precio estimado. PENDIENTE: solicitar cotización formal a Maluquer.
+                Sabor premium — diferenciador para canal natural (Whole Foods, Sprouts).
+                Aplica a Mixto 126g y Mixto 340g (formato premium shelf).
+            </field>
+        </record>
+
+    </data>
+</odoo>

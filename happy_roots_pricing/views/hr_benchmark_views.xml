@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_benchmark_form" model="ir.ui.view">
+        <field name="name">hr.benchmark.competitor.form</field>
+        <field name="model">hr.benchmark.competitor</field>
+        <field name="arch" type="xml">
+            <form string="Competidor Benchmark">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                        <h2><field name="product_name"/></h2>
+                    </div>
+                    <group>
+                        <group string="Identificación">
+                            <field name="tier" widget="radio"/>
+                            <field name="channel"/>
+                            <field name="channel_notes"/>
+                            <field name="origin_country"/>
+                            <field name="is_direct_competitor" widget="boolean_toggle"/>
+                        </group>
+                        <group string="Precio">
+                            <field name="weight_oz"/>
+                            <field name="weight_g" readonly="1" digits="[10,2]"/>
+                            <field name="msrp_usd"/>
+                            <field name="price_per_oz" readonly="1" digits="[10,4]"
+                                   class="hr_price_final"
+                                   style="font-size:1.2em; font-weight:bold;"/>
+                            <field name="is_bogo"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Verificación">
+                            <field name="date_checked"/>
+                            <field name="source"/>
+                            <field name="source_url" widget="url"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="notes" placeholder="Notas estratégicas (ventaja competitiva, riesgo, posicionamiento)..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_benchmark_list" model="ir.ui.view">
+        <field name="name">hr.benchmark.competitor.list</field>
+        <field name="model">hr.benchmark.competitor</field>
+        <field name="arch" type="xml">
+            <list string="Benchmark Competidores USA"
+                  decoration-info="tier == '1'"
+                  decoration-warning="tier == '2'">
+                <field name="tier" widget="badge"
+                       decoration-info="tier == '1'"
+                       decoration-warning="tier == '2'"/>
+                <field name="name"/>
+                <field name="product_name"/>
+                <field name="origin_country" optional="show"/>
+                <field name="channel"/>
+                <field name="weight_oz"/>
+                <field name="msrp_usd"/>
+                <field name="price_per_oz" string="$/oz"
+                       class="hr_price_final"/>
+                <field name="is_bogo" optional="show"/>
+                <field name="is_direct_competitor" optional="show"/>
+                <field name="date_checked" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_benchmark_search" model="ir.ui.view">
+        <field name="name">hr.benchmark.competitor.search</field>
+        <field name="model">hr.benchmark.competitor</field>
+        <field name="arch" type="xml">
+            <search string="Buscar competidores">
+                <field name="name"/>
+                <field name="product_name"/>
+                <separator/>
+                <filter name="tier1" string="Tier 1 Premium"
+                        domain="[('tier', '=', '1')]"/>
+                <filter name="tier2" string="Tier 2 Ethnic"
+                        domain="[('tier', '=', '2')]"/>
+                <filter name="direct" string="Competidores directos"
+                        domain="[('is_direct_competitor', '=', True)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_tier" string="Tier"
+                            context="{'group_by': 'tier'}"/>
+                    <filter name="group_channel" string="Canal"
+                            context="{'group_by': 'channel'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hr_benchmark" model="ir.actions.act_window">
+        <field name="name">Benchmark Competidores USA</field>
+        <field name="res_model">hr.benchmark.competitor</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_direct': 1}</field>
+    </record>
+</odoo>

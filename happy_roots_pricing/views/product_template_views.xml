@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Smart button en el producto nativo de Odoo -->
+    <record id="view_product_template_inherit_hr" model="ir.ui.view">
+        <field name="name">product.template.inherit.hr.pricing</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_hr_combos"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-bar-chart"
+                        attrs="{'invisible': [('hr_combo_count', '=', 0)]}">
+                    <field name="hr_combo_count" widget="statinfo"
+                           string="Pricing HR"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

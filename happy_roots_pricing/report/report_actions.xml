@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── RESUMEN EJECUTIVO ──────────────────────────────────────────────── -->
+    <record id="action_report_hr_summary" model="ir.actions.report">
+        <field name="name">Resumen Ejecutivo — Pricing Happy Roots</field>
+        <field name="model">hr.product.combo</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">happy_roots_pricing.report_summary</field>
+        <field name="report_file">happy_roots_pricing.report_summary</field>
+        <field name="binding_model_id" ref="base.model_res_company"/>
+        <field name="print_report_name">'Resumen_Pricing_Happy_Roots_' + (object.date_today or '')</field>
+    </record>
+
+    <!-- ── FICHA DE PRODUCTO (un combo) ──────────────────────────────────── -->
+    <record id="action_report_hr_product_sheet" model="ir.actions.report">
+        <field name="name">Ficha de Producto — Happy Roots</field>
+        <field name="model">hr.product.combo</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">happy_roots_pricing.report_product_sheet</field>
+        <field name="report_file">happy_roots_pricing.report_product_sheet</field>
+        <field name="binding_model_id" ref="happy_roots_pricing.model_hr_product_combo"/>
+        <field name="print_report_name">'Ficha_' + object.internal_code</field>
+    </record>
+
+    <!-- ── COTIZACIÓN 3 INCOTERMS ─────────────────────────────────────────── -->
+    <record id="action_report_hr_incoterm_quote" model="ir.actions.report">
+        <field name="name">Cotización Incoterms — Happy Roots</field>
+        <field name="model">hr.product.combo</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">happy_roots_pricing.report_incoterm_quote</field>
+        <field name="report_file">happy_roots_pricing.report_incoterm_quote</field>
+        <field name="binding_model_id" ref="happy_roots_pricing.model_hr_product_combo"/>
+        <field name="print_report_name">'Cotizacion_' + object.internal_code</field>
+    </record>
+
+</odoo>

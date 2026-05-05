@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_summary">
+    <t t-call="web.html_container">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <!-- ENCABEZADO -->
+                <div class="row mb-4">
+                    <div class="col-8">
+                        <h1 style="color:#2c7a2c; font-family:Arial;">
+                            Happy Roots — Resumen Ejecutivo de Pricing
+                        </h1>
+                        <p class="text-muted">
+                            Happy Roots · Confidencial
+                        </p>
+                    </div>
+                    <div class="col-4 text-right">
+                        <p><strong>Fecha:</strong>
+                            <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+                        </p>
+                        <p><strong>Modelo:</strong> v9 · Happy Roots Pricing Engine</p>
+                    </div>
+                </div>
+
+                <!-- SUPUESTOS ACTIVOS -->
+                <t t-set="config" t-value="env['hr.pricing.config'].get_config()"/>
+                <div class="alert alert-secondary mb-3" style="background:#f8f9fa; border-left:4px solid #2c7a2c;">
+                    <strong>Supuestos activos:</strong>
+                    TC CRC/USD: <strong><t t-esc="'%.2f' % config.exchange_rate_crc_usd"/></strong> ·
+                    Flete marítimo: <strong>USD <t t-esc="'%.0f' % config.freight_maritime_usd"/>/cont.</strong> ·
+                    Section 122:
+                    <t t-if="config.section_122_active">
+                        <strong style="color:#c0392b;"><t t-esc="'%.0f' % (config.section_122_pct * 100)"/>% ACTIVO</strong>
+                    </t>
+                    <t t-else="">
+                        <strong style="color:#27ae60;">0% (inactivo)</strong>
+                    </t> ·
+                    Margen HR: <strong><t t-esc="'%.1f' % (config.margin_hr_pct * 100)"/>%</strong> ·
+                    Margen Retailer: <strong><t t-esc="'%.1f' % (config.margin_retailer_pct * 100)"/>%</strong>
+                </div>
+
+                <!-- TABLA MAESTRA DE PRECIOS -->
+                <h3 style="color:#2c7a2c;">Tabla Maestra — Precios Finales (USD/bolsa)</h3>
+                <table class="table table-sm table-bordered" style="font-size:11px;">
+                    <thead style="background:#2c7a2c; color:white;">
+                        <tr>
+                            <th>#</th>
+                            <th>SKU</th>
+                            <th>Sabor</th>
+                            <th>g</th>
+                            <th>EXW</th>
+                            <th>FOB Limón</th>
+                            <th>DDP Miami</th>
+                            <th>Wholesale HR</th>
+                            <th>MSRP</th>
+                            <th>$/oz</th>
+                            <th>Margen HR%</th>
+                            <th>Recomendación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="combos" t-value="env['hr.product.combo'].search([('state', '=', 'active')], order='sequence, id')"/>
+                        <t t-foreach="combos" t-as="combo">
+                            <tr t-attf-style="background:{{ '#f0fff0' if combo_index % 2 == 0 else 'white' }}">
+                                <td><t t-esc="combo_index + 1"/></td>
+                                <td><strong><t t-esc="combo.base_id.name"/></strong></td>
+                                <td><t t-esc="combo.seasoning_id.name"/></td>
+                                <td><t t-esc="combo.format_weight_g"/></td>
+                                <td style="text-align:right;color:#555;">
+                                    $<t t-esc="'%.4f' % combo.price_exw"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    $<t t-esc="'%.4f' % combo.price_fob"/>
+                                </td>
+                                <td style="text-align:right; font-weight:bold; color:#c0392b;">
+                                    $<t t-esc="'%.4f' % combo.price_ddp"/>
+                                </td>
+                                <td style="text-align:right; font-weight:bold; color:#8e44ad;">
+                                    $<t t-esc="'%.4f' % combo.price_wholesale_direct"/>
+                                </td>
+                                <td style="text-align:right; font-weight:bold; color:#c0392b; font-size:1.05em;">
+                                    $<t t-esc="'%.4f' % combo.price_msrp"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    $<t t-esc="'%.4f' % combo.price_per_oz_msrp"/>
+                                </td>
+                                <td style="text-align:right;">
+                                    <t t-esc="'%.1f' % (combo.margin_pct_direct * 100)"/>%
+                                </td>
+                                <td style="font-size:9px; color:#555;">
+                                    <t t-esc="combo.channel_recommendation"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <!-- DESGLOSE DE COSTOS EXW -->
+                <div class="page-break"/>
+                <h3 style="color:#2c7a2c; margin-top:20px;">Desglose Costo EXW por Combo (USD/bolsa)</h3>
+                <table class="table table-sm table-bordered" style="font-size:11px;">
+                    <thead style="background:#555; color:white;">
+                        <tr>
+                            <th>Combo</th>
+                            <th>Maquila</th>
+                            <th>Bolsa</th>
+                            <th>Condimento</th>
+                            <th>Caja</th>
+                            <th>Pallet</th>
+                            <th>= EXW</th>
+                            <th>Δ FOB-EXW</th>
+                            <th>Δ DDP-FOB</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="combos" t-as="combo">
+                            <tr>
+                                <td><strong><t t-esc="combo.internal_code"/></strong></td>
+                                <td style="text-align:right;">$<t t-esc="'%.6f' % combo.cost_maquila_usd"/></td>
+                                <td style="text-align:right;">$<t t-esc="'%.6f' % combo.cost_bag_usd"/></td>
+                                <td style="text-align:right;">$<t t-esc="'%.6f' % combo.cost_seasoning_usd"/></td>
+                                <td style="text-align:right;">$<t t-esc="'%.6f' % combo.cost_box_usd"/></td>
+                                <td style="text-align:right;">$<t t-esc="'%.6f' % combo.cost_pallet_usd"/></td>
+                                <td style="text-align:right; font-weight:bold;">$<t t-esc="'%.6f' % combo.price_exw"/></td>
+                                <td style="text-align:right; color:#2980b9;">+$<t t-esc="'%.6f' % combo.delta_fob_exw"/></td>
+                                <td style="text-align:right; color:#e67e22;">+$<t t-esc="'%.6f' % combo.delta_ddp_fob"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <!-- PIE DE PÁGINA -->
+                <div class="mt-4" style="border-top:1px solid #ccc; padding-top:10px; font-size:9px; color:#999;">
+                    Confidencial · Happy Roots ·
+                    Generado con Happy Roots Pricing Engine (Odoo 19 Community) ·
+                    <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                </div>
+            </div>
+        </t>
+    </t>
+</template>
+</odoo>

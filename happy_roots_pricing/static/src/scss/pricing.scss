@@ -1,0 +1,71 @@
+// ══════════════════════════════════════════════════════════════════════════
+// Happy Roots Pricing Engine — Estilos visuales
+// Sistema de colores: mismo código que el Excel (amarillo=input, fucsia=total,
+// azul=subtotal, verde=confirmado)
+// ══════════════════════════════════════════════════════════════════════════
+
+// ── Inputs editables (equivale a celdas amarillas del Excel) ─────────────
+.hr_input_editable {
+    background-color: #fff9c4 !important;
+    border: 1px solid #f0c040 !important;
+    font-weight: bold;
+}
+
+// ── Subtotales calculados (equivale a celdas azul claro del Excel) ────────
+.hr_computed_subtotal {
+    color: #1565c0 !important;
+    font-weight: 600;
+}
+
+// ── Precio EXW ────────────────────────────────────────────────────────────
+.hr_price_exw {
+    color: #388e3c !important;
+    font-weight: bold;
+}
+
+// ── Precio FOB ────────────────────────────────────────────────────────────
+.hr_price_fob {
+    color: #1976d2 !important;
+    font-weight: bold;
+}
+
+// ── Precio DDP ────────────────────────────────────────────────────────────
+.hr_price_ddp {
+    color: #e65100 !important;
+    font-weight: bold;
+}
+
+// ── Precio Wholesale ──────────────────────────────────────────────────────
+.hr_price_wholesale {
+    color: #6a1b9a !important;
+    font-weight: bold;
+}
+
+// ── Precio MSRP / Total final (equivale a celdas fucsia del Excel) ────────
+.hr_price_msrp,
+.hr_price_final {
+    color: #c62828 !important;
+    font-weight: bold;
+}
+
+// ── Filas de la lista de combos con color por posición vs benchmark ───────
+.o_data_row {
+    &.o_data_row_success .hr_price_msrp { color: #2e7d32 !important; }
+    &.o_data_row_warning .hr_price_msrp { color: #e65100 !important; }
+}
+
+// ── Separadores de sección con color HR verde ─────────────────────────────
+.o_horizontal_separator {
+    color: #2c7a2c !important;
+    font-weight: bold;
+    border-top: 2px solid #2c7a2c !important;
+    padding-top: 8px;
+    margin-top: 12px;
+}
+
+// ── Tabs del notebook con indicador visual ────────────────────────────────
+.o_notebook .nav-link.active {
+    border-bottom: 3px solid #2c7a2c !important;
+    font-weight: bold;
+    color: #2c7a2c !important;
+}

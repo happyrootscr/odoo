@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_scenario_wizard_form" model="ir.ui.view">
+        <field name="name">hr.scenario.wizard.form</field>
+        <field name="model">hr.scenario.wizard</field>
+        <field name="arch" type="xml">
+            <form string="🧮 Simulador de Escenarios What-If">
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        <strong>Simulación sin guardar</strong> — Cambia los supuestos y presiona
+                        "Simular" para ver el impacto en todos los combos SIN modificar la configuración real.
+                        Solo si quieres aplicar los cambios permanentemente, presiona "Aplicar a configuración".
+                    </div>
+                    <div class="oe_title">
+                        <h2><field name="scenario_label"/></h2>
+                    </div>
+                    <group string="Supuestos a simular (editar los que quieras cambiar)">
+                        <group>
+                            <field name="exchange_rate_crc_usd" string="TC CRC/USD"/>
+                            <field name="section_122_active"/>
+                            <field name="section_122_pct" widget="percentage"
+                                   attrs="{'readonly': [('section_122_active', '=', False)]}"/>
+                        </group>
+                        <group>
+                            <field name="margin_hr_pct" widget="percentage"/>
+                            <field name="margin_retailer_pct" widget="percentage"/>
+                            <field name="freight_maritime_usd"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_simulate" type="object"
+                                string="🔄 Simular" class="btn-primary"/>
+                        <button name="action_apply_to_config" type="object"
+                                string="✅ Aplicar a configuración real"
+                                class="btn-warning"
+                                confirm="¿Desea guardar estos supuestos en la configuración real y recalcular todos los combos?"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+                <!-- Resultados simulados -->
+                <sheet attrs="{'invisible': [('result_ids', '=', [])]}">
+                    <separator string="Resultados — comparación actual vs simulado"/>
+                    <field name="result_ids" readonly="1">
+                        <list decoration-danger="ddp_delta_pct > 5"
+                              decoration-success="ddp_delta_pct &lt; 0">
+                            <field name="combo_id" string="Combo"/>
+                            <field name="price_ddp_current" string="DDP actual" digits="[10,4]"/>
+                            <field name="price_ddp_sim" string="DDP simulado" digits="[10,4]"/>
+                            <field name="ddp_delta_pct" string="Δ DDP %" digits="[6,2]"/>
+                            <field name="price_msrp_current" string="MSRP actual" digits="[10,4]"/>
+                            <field name="price_msrp_sim" string="MSRP simulado" digits="[10,4]"/>
+                            <field name="msrp_delta_pct" string="Δ MSRP %" digits="[6,2]"/>
+                            <field name="price_per_oz_sim" string="$/oz simulado" digits="[10,4]"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_scenario_wizard" model="ir.actions.act_window">
+        <field name="name">Simulador de Escenarios</field>
+        <field name="res_model">hr.scenario.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

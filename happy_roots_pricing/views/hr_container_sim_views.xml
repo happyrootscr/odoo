@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_container_sim_form" model="ir.ui.view">
+        <field name="name">hr.container.sim.form</field>
+        <field name="model">hr.container.sim</field>
+        <field name="arch" type="xml">
+            <form string="Simulador de Contenedor y Proyección">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed"/>
+                    <button name="%(action_hr_container_sim)d"
+                            type="action"
+                            string="Nueva simulación"
+                            class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                        <field name="date"/>
+                    </div>
+
+                    <notebook>
+                        <!-- ── 1. PRODUCCIÓN ──────────────────────────── -->
+                        <page string="🏭 Configuración de producción" name="production">
+                            <div class="alert alert-info" role="alert">
+                                Define cuántos contenedores de cada formato maquilarás por mes
+                                y el OPEX mensual (marketing, salarios, oficina, etc.).
+                            </div>
+                            <group>
+                                <group string="Volumen mensual">
+                                    <field name="containers_126g_month"/>
+                                    <field name="containers_340g_month"/>
+                                    <field name="opex_monthly_usd"/>
+                                </group>
+                                <group string="Mix de canales de venta (debe sumar 100%)">
+                                    <field name="channel_direct_pct" widget="percentage"/>
+                                    <field name="channel_distributor_pct" widget="percentage"/>
+                                    <field name="channel_dtc_pct" widget="percentage"/>
+                                    <field name="channel_total_pct" readonly="1"
+                                           widget="percentage"
+                                           decoration-danger="not channel_mix_valid"
+                                           decoration-success="channel_mix_valid"/>
+                                    <field name="channel_mix_valid" invisible="1"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- ── 2. MIX 126g ─────────────────────────────── -->
+                        <page string="📦 Mix contenedor 126g" name="mix_126g">
+                            <div class="alert alert-secondary" role="alert">
+                                Define qué % de cada combo va en el contenedor de 126g. Debe sumar 100%.
+                                Contenedor 40HC = 33,264 bolsas total.
+                            </div>
+                            <field name="mix_126g_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="combo_id"
+                                           domain="[('base_id.format_weight_g', '=', 126), ('state', '=', 'active')]"/>
+                                    <field name="pct_in_mix" widget="percentage"/>
+                                    <field name="bags_in_container" readonly="1" digits="[10,0]"/>
+                                    <field name="price_ddp" readonly="1" digits="[10,6]"
+                                           string="DDP/bolsa" class="hr_price_ddp"/>
+                                    <field name="price_wholesale_direct" readonly="1"
+                                           digits="[10,6]" string="Wholesale HR"/>
+                                    <field name="price_wholesale_distributor" readonly="1"
+                                           digits="[10,6]" string="Wholesale Dist."/>
+                                    <field name="price_dtc" readonly="1"
+                                           digits="[10,6]" string="Precio DTC"/>
+                                    <field name="format_type" invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <!-- ── 3. MIX 340g ─────────────────────────────── -->
+                        <page string="📦 Mix contenedor 340g" name="mix_340g">
+                            <div class="alert alert-secondary" role="alert">
+                                Define qué % de cada combo va en el contenedor de 340g. Debe sumar 100%.
+                                Contenedor 40HC = 7,920 bolsas total.
+                            </div>
+                            <field name="mix_340g_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="combo_id"
+                                           domain="[('base_id.format_weight_g', '=', 340), ('state', '=', 'active')]"/>
+                                    <field name="pct_in_mix" widget="percentage"/>
+                                    <field name="bags_in_container" readonly="1" digits="[10,0]"/>
+                                    <field name="price_ddp" readonly="1" digits="[10,6]"
+                                           string="DDP/bolsa" class="hr_price_ddp"/>
+                                    <field name="price_wholesale_direct" readonly="1"
+                                           digits="[10,6]" string="Wholesale HR"/>
+                                    <field name="price_wholesale_distributor" readonly="1"
+                                           digits="[10,6]" string="Wholesale Dist."/>
+                                    <field name="price_dtc" readonly="1"
+                                           digits="[10,6]" string="Precio DTC"/>
+                                    <field name="format_type" invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <!-- ── 4. RESULTADOS ───────────────────────────── -->
+                        <page string="📊 Resultado por contenedor" name="results">
+                            <group string="Contenedor 126g — resultado individual">
+                                <group>
+                                    <field name="container_cost_ddp_126g" readonly="1"
+                                           string="Costo DDP total" digits="[10,2]"/>
+                                    <field name="container_revenue_126g" readonly="1"
+                                           string="Ingreso (mix canales)" digits="[10,2]"/>
+                                    <field name="container_gross_profit_126g" readonly="1"
+                                           string="Ganancia bruta" digits="[10,2]"
+                                           class="hr_price_final"/>
+                                </group>
+                                <group>
+                                    <field name="avg_ddp_126g" readonly="1"
+                                           string="DDP prom./bolsa" digits="[10,6]"/>
+                                    <field name="avg_wholesale_direct_126g" readonly="1"
+                                           digits="[10,6]"/>
+                                    <field name="avg_wholesale_dist_126g" readonly="1"
+                                           digits="[10,6]"/>
+                                </group>
+                            </group>
+                            <group string="Contenedor 340g — resultado individual">
+                                <group>
+                                    <field name="container_cost_ddp_340g" readonly="1"
+                                           digits="[10,2]"/>
+                                    <field name="container_revenue_340g" readonly="1"
+                                           digits="[10,2]"/>
+                                    <field name="container_gross_profit_340g" readonly="1"
+                                           digits="[10,2]" class="hr_price_final"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- ── 5. PROYECCIÓN MENSUAL/ANUAL ─────────────── -->
+                        <page string="📅 Proyección mensual y anual" name="projection">
+                            <group string="Volumen">
+                                <group>
+                                    <field name="total_containers_month" readonly="1"/>
+                                    <field name="total_bags_month" readonly="1"/>
+                                    <field name="total_kg_month" readonly="1" digits="[10,2]"/>
+                                </group>
+                            </group>
+                            <group string="Finanzas mensuales">
+                                <group>
+                                    <field name="total_cost_ddp_month" readonly="1" digits="[10,2]"/>
+                                    <field name="total_revenue_month" readonly="1" digits="[10,2]"/>
+                                    <field name="total_gross_profit_month" readonly="1"
+                                           digits="[10,2]" class="hr_price_final"/>
+                                    <field name="gross_margin_pct" readonly="1"
+                                           widget="percentage" digits="[6,2]"/>
+                                    <field name="total_net_profit_month" readonly="1"
+                                           digits="[10,2]" class="hr_price_final"/>
+                                </group>
+                                <group>
+                                    <field name="total_revenue_year" readonly="1" digits="[10,2]"/>
+                                    <field name="total_gross_profit_year" readonly="1"
+                                           digits="[10,2]"/>
+                                    <field name="total_net_profit_year" readonly="1"
+                                           digits="[10,2]" class="hr_price_final"/>
+                                    <field name="breakeven_containers" readonly="1"
+                                           digits="[10,1]"
+                                           string="Break-even (contenedores para cubrir OPEX)"/>
+                                </group>
+                            </group>
+                            <separator string="¿Qué pasaría si vendiéramos todo por un solo canal?"/>
+                            <group string="Escenarios de canal único (ingreso mensual)">
+                                <group>
+                                    <field name="revenue_100pct_direct" readonly="1"
+                                           digits="[10,2]"/>
+                                    <field name="profit_100pct_direct" readonly="1"
+                                           digits="[10,2]"/>
+                                </group>
+                                <group>
+                                    <field name="revenue_100pct_distributor" readonly="1"
+                                           digits="[10,2]"/>
+                                    <field name="profit_100pct_distributor" readonly="1"
+                                           digits="[10,2]"/>
+                                </group>
+                                <group>
+                                    <field name="revenue_100pct_dtc" readonly="1"
+                                           digits="[10,2]"/>
+                                    <field name="profit_100pct_dtc" readonly="1"
+                                           digits="[10,2]"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- ── 6. NOTAS ───────────────────────────────── -->
+                        <page string="📝 Notas" name="notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_container_sim_list" model="ir.ui.view">
+        <field name="name">hr.container.sim.list</field>
+        <field name="model">hr.container.sim</field>
+        <field name="arch" type="xml">
+            <list string="Simulaciones de Contenedor">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="state" widget="badge"/>
+                <field name="containers_126g_month"/>
+                <field name="containers_340g_month"/>
+                <field name="total_revenue_month" string="Ingreso/mes" digits="[10,2]"/>
+                <field name="total_gross_profit_month" string="Ganancia bruta/mes" digits="[10,2]"/>
+                <field name="gross_margin_pct" string="Margen bruto" widget="percentage"/>
+                <field name="total_net_profit_month" string="Ganancia neta/mes" digits="[10,2]"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_hr_container_sim" model="ir.actions.act_window">
+        <field name="name">Simulador de Contenedor</field>
+        <field name="res_model">hr.container.sim</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Crear primera simulación</p>
+            <p>Proyecta ingresos y ganancias por mes/año según volumen de contenedores y mix de canales.</p>
+        </field>
+    </record>
+</odoo>

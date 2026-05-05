@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- ══════════════════════════════════════════════════════════════════
+             LOS 10 COMBOS — Portafolio completo Happy Roots
+             Fuente: Happy Roots Pricing Model v9 (abril 2026)
+             ══════════════════════════════════════════════════════════════════ -->
+
+        <!-- ── 1. YUCA 126g × SAL MARINA ─────────────────────────────────── -->
+        <record id="combo_yuc126_sal" model="hr.product.combo">
+            <field name="sequence">10</field>
+            <field name="internal_code">YUC126-SAL</field>
+            <field name="name">Yuca 126g — Sal Marina</field>
+            <field name="base_id" ref="base_yuca_126g"/>
+            <field name="seasoning_id" ref="seasoning_sal_marina"/>
+            <field name="dosification_kg_per_bag">0.015</field>
+            <field name="state">active</field>
+            <field name="channel_recommendation">Hero product · entrada al mercado</field>
+            <field name="notes">
+                SKU de entrada. Menor costo de condimento = mayor margen.
+                Usar como referencia base para calcular Wholesale de la línea Yuca 126g.
+                Competencia directa: Artisan Tropic Cassava Sea Salt, Mi Cosecha Yuca Chips.
+            </field>
+        </record>
+
+        <!-- ── 2. YUCA 126g × AJO ROSTIZADO ──────────────────────────────── -->
+        <record id="combo_yuc126_ajo" model="hr.product.combo">
+            <field name="sequence">20</field>
+            <field name="internal_code">YUC126-AJO</field>
+            <field name="name">Yuca 126g — Ajo Rostizado</field>
+            <field name="base_id" ref="base_yuca_126g"/>
+            <field name="seasoning_id" ref="seasoning_ajo_rostizado"/>
+            <field name="dosification_kg_per_bag">0.06</field>
+            <field name="state">active</field>
+            <field name="channel_recommendation">Secundario · diferenciación sabor</field>
+            <field name="notes">
+                Sabor con diferenciación — Ajo Rostizado no existe en Soldanza ni Mi Cosecha.
+                Condimento SUPUESTO: confirmar precio Maluquer antes del primer embarque.
+                Margen menor que Sal Marina por mayor costo de condimento (6% dosificación).
+            </field>
+        </record>
+
+        <!-- ── 3. YUCA 126g × CREMA DE CEBOLLA ───────────────────────────── -->
+        <record id="combo_yuc126_ceb" model="hr.product.combo">
+            <field name="sequence">30</field>
+            <field name="internal_code">YUC126-CEB</field>
+            <field name="name">Yuca 126g — Crema de Cebolla</field>
+            <field name="base_id" ref="base_yuca_126g"/>
+            <field name="seasoning_id" ref="seasoning_crema_cebolla"/>
+            <field name="dosification_kg_per_bag">0.07</field>
+            <field name="state">active</field>
+            <field name="channel_recommendation">Premium · alto costo condimento</field>
+            <field name="notes">
+                Condimento más caro del portafolio (7% dosificación × $11.10/kg).
+                Margen real más bajo dentro de la línea Yuca 126g (~37.5%).
+                Competencia: Iselitas Cassava Sour Cream/Onion ($4.19 en Publix para 142g).
+                Precio confirmado Maluquer #26138 (código 72889).
+            </field>
+        </record>
+
+        <!-- ── 4. PLÁTANO 126g × SAL MARINA ──────────────────────────────── -->
+        <record id="combo_plt126_sal" model="hr.product.combo">
+            <field name="sequence">40</field>
+            <field name="internal_code">PLT126-SAL</field>
+            <field name="name">Plátano 126g — Sal Marina</field>
+            <field name="base_id" ref="base_platano_126g"/>
+            <field name="seasoning_id" ref="seasoning_sal_marina"/>
+            <field name="dosification_kg_per_bag">0.015</field>
+            <field name="state">active</field>
+            <field name="channel_recommendation">Hero product · entrada al mercado</field>
+            <field name="notes">
+                Equivalente al YUC126-SAL pero en plátano. Competencia directa:
+                Artisan Tropic Plantain Strips Sea Salt, Soldanza Plantain Chips.
+                Bundle ideal: vender junto con YUC126-SAL en promociones 2x1.
+            </field>
+        </record>
+
+        <!-- ── 5. PLÁTANO 126g × SAL Y LIMÓN ─────────────────────────────── -->
+        <record id="combo_plt126_lim" model="hr.product.combo">
+            <field name="sequence">50</field>
+            <field name="internal_code">PLT126-LIM</field>
+            <field name="name">Plátano 126g — Sal y Limón</field>
+            <field name="base_id" ref="base_platano_126g"/>
+            <field name="seasoning_id" ref="seasoning_sal_limon"/>
+            <field name="dosification_kg_per_bag">0.06</field>
+            <field name="state">active</field>
+            <field name="channel_recommendation">Promo · cross-sell con Sal Marina</field>
+            <field name="notes">
+                Perfil de sabor popular en canal Latino/Hispanic (Miami, California).
+                Bundle cross-sell con PLT126-SAL.
+                Precio confirmado Maluquer #26138 (código 72656 — SAL &amp; LIMON GF V2).
+            </field>
+        </record>
+
+        <!-- ── 6. PLÁTANO 126g × CHILE LIMÓN ─────────────────────────────── -->
+        <record id="combo_plt126_chi" model="hr.product.combo">
+            <field name="sequence">60</field>
+            <field name="internal_code">PLT126-CHI</field>
+            <field name="name">Plátano 126g — Chile Limón</field>
+            <field name="base_id" ref="base_platano_126g"/>
+            <field name="seasoning_id" ref="seasoning_chile_limon"/>
+            <field name="dosification_kg_per_bag">0.06</field>
+            <field name="state">active</field>
+            <field name="channel_recommendation">Secundario · perfil Latino</field>
+            <field name="notes">
+                Sabor picante — target Hispanic market. Canal Sedanos, bodegas latinas Miami.
+                Precio confirmado Maluquer #26138 (código 72018 — CHILE NATURAL V2).
+            </field>
+        </record>
+
+        <!-- ── 7. MIXTO 126g × MEDITERRÁNEO ──────────────────────────────── -->
+        <record id="combo_mix126_med" model="hr.product.combo">
+            <field name="sequence">70</field>
+            <field name="internal_code">MIX126-MED</field>
+            <field name="name">Mixto 126g — Mediterráneo</field>
+            <field name="base_id" ref="base_mixto_126g"/>
+            <field name="seasoning_id" ref="seasoning_mediterraneo"/>
+            <field name="dosification_kg_per_bag">0.05</field>
+            <field name="state">active</field>
+            <field name="channel_recommendation">Diferenciador · 4 tubérculos</field>
+            <field name="notes">
+                SKU diferenciador clave — mix taro + camote anaranjado + camote morado + yuca.
+                Ningún competidor ofrece este mix. Canal premium (Whole Foods, Sprouts).
+                MSRP $3.99 muy competitivo vs Artisan Tropic Cassava $4.99.
+                Precio condimento confirmado Maluquer #26138 (código 72721).
+            </field>
+        </record>
+
+        <!-- ── 8. MIXTO 126g × ROMERO MANTEQUILLA ────────────────────────── -->
+        <record id="combo_mix126_rom" model="hr.product.combo">
+            <field name="sequence">80</field>
+            <field name="internal_code">MIX126-ROM</field>
+            <field name="name">Mixto 126g — Romero Mantequilla</field>
+            <field name="base_id" ref="base_mixto_126g"/>
+            <field name="seasoning_id" ref="seasoning_romero_mantequilla"/>
+            <field name="dosification_kg_per_bag">0.05</field>
+            <field name="state">active</field>
+            <field name="channel_recommendation">Diferenciador · bundle con Mediterráneo</field>
+            <field name="notes">
+                Bundle ideal con MIX126-MED (Mediterráneo + Romero = colección "gourmet").
+                Condimento SUPUESTO: confirmar precio Maluquer antes del primer embarque.
+                Canal natural premium. Precio MIX126-ROM ≈ MIX126-MED (mismo MSRP por SKU).
+            </field>
+        </record>
+
+        <!-- ── 9. MIXTO 340g × MEDITERRÁNEO ──────────────────────────────── -->
+        <record id="combo_mix340_med" model="hr.product.combo">
+            <field name="sequence">90</field>
+            <field name="internal_code">MIX340-MED</field>
+            <field name="name">Mixto 340g — Mediterráneo</field>
+            <field name="base_id" ref="base_mixto_340g"/>
+            <field name="seasoning_id" ref="seasoning_mediterraneo"/>
+            <field name="dosification_kg_per_bag">0.05</field>
+            <field name="state">active</field>
+            <field name="channel_recommendation">Premium shelf · natural channel</field>
+            <field name="notes">
+                Formato familiar (340g = 12 oz). Ideal para Amazon Subscribe &amp; Save y club stores.
+                MSRP ~$13.58 · caja Shipper = display-ready para góndola sin desempacar.
+                El DDP por bolsa más alto del portafolio → requiere canal premium o DTC.
+                Ratio Mixto: ₡4,500/kg CONFIRMADO (reemplaza ₡7,500 typo y ₡3,850 estimación).
+            </field>
+        </record>
+
+        <!-- ── 10. MIXTO 340g × ROMERO MANTEQUILLA ───────────────────────── -->
+        <record id="combo_mix340_rom" model="hr.product.combo">
+            <field name="sequence">100</field>
+            <field name="internal_code">MIX340-ROM</field>
+            <field name="name">Mixto 340g — Romero Mantequilla</field>
+            <field name="base_id" ref="base_mixto_340g"/>
+            <field name="seasoning_id" ref="seasoning_romero_mantequilla"/>
+            <field name="dosification_kg_per_bag">0.05</field>
+            <field name="state">active</field>
+            <field name="channel_recommendation">Premium shelf · natural channel</field>
+            <field name="notes">
+                Companion SKU al MIX340-MED. Bundle pack premium = MED + ROM.
+                Condimento SUPUESTO: confirmar precio Maluquer.
+                Mismo MSRP que MIX340-MED por ser mismo SKU base.
+                Canal DTC Amazon muy viable: margen ~55% después de fees plataforma.
+            </field>
+        </record>
+
+    </data>
+</odoo>

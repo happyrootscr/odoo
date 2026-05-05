@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         FORM VIEW — Supuestos Globales
+         ═══════════════════════════════════════════════════════════════════ -->
+    <record id="view_hr_pricing_config_form" model="ir.ui.view">
+        <field name="name">hr.pricing.config.form</field>
+        <field name="model">hr.pricing.config</field>
+        <field name="arch" type="xml">
+            <form string="Supuestos Globales de Pricing">
+                <header>
+                    <button name="action_recalculate_all"
+                            type="object"
+                            string="🔄 Recalcular todos los combos"
+                            class="btn-primary"
+                            confirm="¿Desea recalcular los precios de todos los combos activos con estos supuestos?"/>
+                    <button name="action_open_scenario_wizard"
+                            type="object"
+                            string="🧮 Simular escenario what-if"
+                            class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                        <p class="text-muted">
+                            Todos los campos de esta pantalla son los "inputs amarillos" del modelo Excel.
+                            Cambiar cualquier valor y presionar "Recalcular" actualiza los 10 combos automáticamente.
+                        </p>
+                    </div>
+
+                    <group>
+                        <group string="📋 Control de versión">
+                            <field name="last_updated"/>
+                            <field name="last_updated_by"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <!-- ── 1. TIPO DE CAMBIO ────────────────────────── -->
+                        <page string="💱 Tipo de cambio" name="exchange">
+                            <group>
+                                <group string="Tasa CRC/USD">
+                                    <field name="exchange_rate_crc_usd"
+                                           widget="monetary"
+                                           options="{'field': 'exchange_rate_crc_usd'}"
+                                           class="hr_input_editable"/>
+                                    <field name="exchange_rate_source"/>
+                                </group>
+                                <group string="Referencia">
+                                    <div class="alert alert-info" role="alert">
+                                        <strong>Fuente oficial:</strong> BCCR (Banco Central de Costa Rica).
+                                        Actualizar mensualmente o antes de cada cotización formal.
+                                        URL: <a href="https://www.bccr.fi.cr" target="_blank">www.bccr.fi.cr</a>
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- ── 2. LOGÍSTICA ────────────────────────────── -->
+                        <page string="🚢 Logística" name="logistics">
+                            <group string="A. Origen Costa Rica (USD/contenedor 40HC)">
+                                <group>
+                                    <field name="trucking_origin_usd"/>
+                                    <field name="handling_port_usd"/>
+                                    <field name="documentation_usd"/>
+                                    <field name="logistics_origin_total_usd"
+                                           readonly="1"
+                                           class="hr_computed_subtotal"/>
+                                </group>
+                            </group>
+                            <group string="B. Internacional">
+                                <group>
+                                    <field name="freight_maritime_usd"/>
+                                    <field name="insurance_pct" widget="percentage"/>
+                                    <field name="freight_carrier"/>
+                                </group>
+                            </group>
+                            <group string="C. Destino USA">
+                                <group>
+                                    <field name="trucking_destination_usd"/>
+                                    <field name="threePL_name"/>
+                                </group>
+                            </group>
+                            <group string="Empaque terciario">
+                                <group>
+                                    <field name="pallet_cost_usd"/>
+                                    <field name="pallets_per_container"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- ── 3. ARANCELES USA ────────────────────────── -->
+                        <page string="🇺🇸 Aranceles USA" name="customs">
+                            <group string="Clasificación arancelaria">
+                                <group>
+                                    <field name="hts_code"/>
+                                    <field name="cafta_duty_pct" widget="percentage"/>
+                                    <field name="mpf_exempt"/>
+                                </group>
+                            </group>
+                            <group string="Section 122 — Sobretasa temporal Trump">
+                                <group>
+                                    <field name="section_122_active"/>
+                                    <field name="section_122_pct" widget="percentage"
+                                           attrs="{'readonly': [('section_122_active', '=', False)]}"/>
+                                    <field name="section_122_expiry"/>
+                                </group>
+                                <group>
+                                    <div class="alert alert-warning" role="alert"
+                                         attrs="{'invisible': [('section_122_active', '=', False)]}">
+                                        <strong>⚠ Section 122 activa.</strong>
+                                        Vigente hasta julio 2026. Cuando venza, desmarcar
+                                        "Section 122 activo" y recalcular para ver precios post-surcharge.
+                                    </div>
+                                </group>
+                            </group>
+                            <group string="Otros fees">
+                                <group>
+                                    <field name="hmf_pct" widget="percentage"/>
+                                    <field name="broker_fda_isf_usd"/>
+                                    <field name="entry_bond_usd"/>
+                                    <field name="fixed_fees_per_entry_usd"
+                                           readonly="1"
+                                           class="hr_computed_subtotal"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- ── 4. MÁRGENES ─────────────────────────────── -->
+                        <page string="📊 Márgenes y canales" name="margins">
+                            <group string="Márgenes por canal">
+                                <group>
+                                    <field name="margin_hr_pct" widget="percentage"/>
+                                    <field name="margin_retailer_pct" widget="percentage"/>
+                                    <field name="distributor_discount_pct" widget="percentage"/>
+                                </group>
+                                <group>
+                                    <field name="dtc_fees_pct" widget="percentage"/>
+                                    <field name="dtc_margin_target_pct" widget="percentage"/>
+                                </group>
+                            </group>
+                            <group string="Benchmark de referencia">
+                                <field name="benchmark_ref_per_oz"/>
+                            </group>
+                            <div class="alert alert-info" role="alert">
+                                <strong>💡 Tabla de decisión (de la hoja Benchmark del Excel):</strong><br/>
+                                Margen 40% → MSRP Yuca 126g ~$3.15 (por debajo del mercado Miami $3.50-$4.00)<br/>
+                                Margen 45% → MSRP ~$3.44 (piso Miami)<br/>
+                                <strong>Margen 50% → MSRP ~$3.79 (alineado con mercado Miami) ← RECOMENDADO</strong><br/>
+                                Margen 55% → MSRP ~$4.21 (techo Miami — solo canal premium)
+                            </div>
+                        </page>
+
+                        <!-- ── 5. NOTAS ─────────────────────────────────── -->
+                        <page string="📝 Notas y cambios" name="notes">
+                            <field name="notes" placeholder="Registrar aquí todos los cambios de supuestos con fecha y motivo..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- LIST VIEW -->
+    <record id="view_hr_pricing_config_list" model="ir.ui.view">
+        <field name="name">hr.pricing.config.list</field>
+        <field name="model">hr.pricing.config</field>
+        <field name="arch" type="xml">
+            <list string="Configuraciones de Pricing">
+                <field name="name"/>
+                <field name="exchange_rate_crc_usd"/>
+                <field name="section_122_active"/>
+                <field name="margin_hr_pct" widget="percentage"/>
+                <field name="last_updated"/>
+                <field name="last_updated_by"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="action_hr_pricing_config" model="ir.actions.act_window">
+        <field name="name">Supuestos Globales</field>
+        <field name="res_model">hr.pricing.config</field>
+        <field name="view_mode">form,list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Configurar los supuestos globales de pricing
+            </p>
+            <p>
+                Tipo de cambio, logística, aranceles USA y márgenes por canal.
+                Es el equivalente a la hoja "Supuestos" del modelo Excel.
+            </p>
+        </field>
+    </record>
+
+</odoo>

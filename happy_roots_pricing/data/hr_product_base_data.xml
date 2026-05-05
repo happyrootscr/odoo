@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- ══════════════════════════════════════════════════════════════════
+             SKUs BASE — 4 formatos físicos Happy Roots
+             Fuente: Cotización Don Mariano ADM + Indupark + tabla ADM (abril 2026)
+             ══════════════════════════════════════════════════════════════════ -->
+
+        <!-- YUCA 126g -->
+        <record id="base_yuca_126g" model="hr.product.base">
+            <field name="name">Yuca 126g</field>
+            <field name="format_weight_g">126</field>
+            <field name="box_type">normal</field>
+
+            <!-- Maquila ADM -->
+            <field name="maquila_cost_crc_per_kg">2450.0</field>
+            <field name="maquila_confirmed">True</field>
+            <field name="maquila_quotation_date">2026-04-01</field>
+            <field name="maquila_notes">Yuca tostada redonda · incluye sal base · sin IVA · contado</field>
+
+            <!-- Bolsas Indupark -->
+            <field name="bag_cost_usd">0.04242</field>
+            <field name="bag_dimensions">160×230mm · BOPP MATE 17u</field>
+
+            <!-- Cajas ADM -->
+            <field name="box_cost_usd">1.09</field>
+            <field name="bags_per_box">18</field>
+
+            <!-- Contenedor -->
+            <field name="bags_per_container">33264</field>
+
+            <field name="channel_recommendation">
+                Entrada al mercado USA. Yuca es el core differentiator de la marca.
+                Canal 1 (direct-to-retailer) priority: Whole Foods, Sprouts, Thrive Market.
+                Hero SKU: YUC126-SAL (Sal Marina) como puerta de entrada.
+            </field>
+        </record>
+
+        <!-- PLÁTANO 126g -->
+        <record id="base_platano_126g" model="hr.product.base">
+            <field name="name">Plátano 126g</field>
+            <field name="format_weight_g">126</field>
+            <field name="box_type">normal</field>
+
+            <field name="maquila_cost_crc_per_kg">2550.0</field>
+            <field name="maquila_confirmed">True</field>
+            <field name="maquila_quotation_date">2026-04-01</field>
+            <field name="maquila_notes">Plátano verde redondo · incluye sal base · sin IVA · contado</field>
+
+            <field name="bag_cost_usd">0.04242</field>
+            <field name="bag_dimensions">160×230mm · BOPP MATE 17u</field>
+
+            <field name="box_cost_usd">1.09</field>
+            <field name="bags_per_box">18</field>
+            <field name="bags_per_container">33264</field>
+
+            <field name="channel_recommendation">
+                Complemento a la línea Yuca. Perfil más Latino/ethnic.
+                PLT126-SAL: cross-sell con Yuca Sal Marina (mismo bundle).
+                PLT126-CHI y PLT126-LIM: canal Latino (Sedanos, tiendas hispanas Miami).
+            </field>
+        </record>
+
+        <!-- MIXTO 126g -->
+        <record id="base_mixto_126g" model="hr.product.base">
+            <field name="name">Mixto 126g</field>
+            <field name="format_weight_g">126</field>
+            <field name="box_type">normal</field>
+
+            <field name="maquila_cost_crc_per_kg">3500.0</field>
+            <field name="maquila_confirmed">True</field>
+            <field name="maquila_quotation_date">2026-04-01</field>
+            <field name="maquila_notes">Mix tubérculos: taro + camote anaranjado + camote morado + yuca · incluye sal base</field>
+
+            <field name="bag_cost_usd">0.04242</field>
+            <field name="bag_dimensions">160×230mm · BOPP MATE 17u</field>
+
+            <field name="box_cost_usd">1.09</field>
+            <field name="bags_per_box">18</field>
+            <field name="bags_per_container">33264</field>
+
+            <field name="channel_recommendation">
+                Diferenciador clave — 4 tubérculos únicos. Ningún competidor directo lo tiene.
+                Posicionar en canal premium (Whole Foods, Sprouts, Thrive Market).
+                MIX126-MED y MIX126-ROM: precio medio, más premium que Yuca/Plátano.
+            </field>
+        </record>
+
+        <!-- MIXTO 340g -->
+        <record id="base_mixto_340g" model="hr.product.base">
+            <field name="name">Mixto 340g</field>
+            <field name="format_weight_g">340</field>
+            <field name="box_type">shipper</field>
+
+            <field name="maquila_cost_crc_per_kg">4500.0</field>
+            <field name="maquila_confirmed">True</field>
+            <field name="maquila_quotation_date">2026-04-01</field>
+            <field name="maquila_notes">Mix tubérculos formato familiar · CONFIRMADO Don Mariano abril 2026 (reemplaza ₡7,500 typo y ₡3,850 estimación previa)</field>
+
+            <field name="bag_cost_usd">0.05135</field>
+            <field name="bag_dimensions">170×280mm · BOPP MATE 17u</field>
+
+            <!-- Caja Shipper display (diseñada para góndola retail) -->
+            <field name="box_cost_usd">1.79</field>
+            <field name="bags_per_box">30</field>
+            <field name="bags_per_container">7920</field>
+
+            <field name="channel_recommendation">
+                Premium shelf — formato familiar para natural channel y club stores.
+                DDP más alto por bolsa pero MSRP también premium ($13.50+).
+                Canal DTC (Amazon) muy viable para este formato.
+                Caja Shipper = también funciona como display en góndola sin desempacar.
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Configuración global inicial — valores del Excel v9 (abril 2026) -->
+        <record id="hr_pricing_config_default" model="hr.pricing.config">
+            <field name="name">Configuración Global</field>
+            <field name="active">True</field>
+
+            <!-- Tipo de cambio -->
+            <field name="exchange_rate_crc_usd">455.0</field>
+            <field name="exchange_rate_source">BCCR · venta promedio abril 2026 (₡455.43)</field>
+
+            <!-- Empaque terciario -->
+            <field name="pallet_cost_usd">18.0</field>
+            <field name="pallets_per_container">22</field>
+
+            <!-- Logística origen CR -->
+            <field name="trucking_origin_usd">500.0</field>
+            <field name="handling_port_usd">350.0</field>
+            <field name="documentation_usd">280.0</field>
+
+            <!-- Logística internacional -->
+            <field name="freight_maritime_usd">3900.0</field>
+            <field name="insurance_pct">0.005</field>
+            <field name="freight_carrier">King Ocean · contacto: Lisa Vázquez</field>
+
+            <!-- Destino USA -->
+            <field name="trucking_destination_usd">650.0</field>
+            <field name="threePL_name">Por definir — 3PL sur de Florida</field>
+
+            <!-- Aranceles USA -->
+            <field name="hts_code">2008.99</field>
+            <field name="cafta_duty_pct">0.0</field>
+            <field name="section_122_active">True</field>
+            <field name="section_122_pct">0.10</field>
+            <field name="section_122_expiry">2026-07-31</field>
+            <field name="hmf_pct">0.00125</field>
+            <field name="mpf_exempt">True</field>
+            <field name="broker_fda_isf_usd">450.0</field>
+            <field name="entry_bond_usd">150.0</field>
+
+            <!-- Márgenes -->
+            <field name="margin_hr_pct">0.4267</field>
+            <field name="margin_retailer_pct">0.40</field>
+            <field name="distributor_discount_pct">0.20</field>
+            <field name="dtc_fees_pct">0.20</field>
+            <field name="dtc_margin_target_pct">0.55</field>
+
+            <!-- Benchmark -->
+            <field name="benchmark_ref_per_oz">1.20</field>
+
+            <field name="notes">
+Configuración inicial cargada desde Happy Roots Pricing Model v9 (abril 2026).
+
+CAMBIOS REGISTRADOS:
+- Abr 2026: TC actualizado ₡510 → ₡455 (BCCR oficial 24-abr-2026)
+- Abr 2026: HTS code corregido 1905.90.9030 → 2008.99
+- Section 122 activa feb-jul 2026 (decreto Trump 10% sobre CIF)
+
+PENDIENTE:
+- Confirmar precio P2P King Ocean con Lisa Vázquez ($3,900 estimado vs $4,710 D/D)
+- Cotizar trucking Sarapiquí → Limón con 2-3 transportistas
+- Definir 3PL Miami (nombre y costo de bodega)
+- Continuous Bond si se hacen más de 6 embarques/año ($500-700/año vs $150/entrada)
+            </field>
+        </record>
+    </data>
+</odoo>

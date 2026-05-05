@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_product_sheet">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="combo">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <t t-set="config" t-value="env['hr.pricing.config'].get_config()"/>
+
+                    <!-- ENCABEZADO -->
+                    <div class="row mb-3">
+                        <div class="col-8">
+                            <h1 style="color:#2c7a2c; font-family:Arial;">
+                                <t t-esc="combo.name"/>
+                            </h1>
+                            <h3 style="color:#555;">
+                                Código: <strong><t t-esc="combo.internal_code"/></strong> ·
+                                Estado: <t t-esc="combo.state"/>
+                            </h3>
+                        </div>
+                        <div class="col-4 text-right">
+                            <p><strong>Fecha:</strong>
+                                <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+                            </p>
+                            <p style="color:#999; font-size:9px;">
+                                Confidencial · Happy Roots
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- ESPECIFICACIONES DEL PRODUCTO -->
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <h4 style="background:#2c7a2c; color:white; padding:5px 10px;">
+                                Especificaciones del producto
+                            </h4>
+                            <table class="table table-sm">
+                                <tr><td><strong>SKU base:</strong></td><td><t t-esc="combo.base_id.name"/></td></tr>
+                                <tr><td><strong>Condimento:</strong></td><td><t t-esc="combo.seasoning_id.name"/></td></tr>
+                                <tr><td><strong>Peso neto:</strong></td><td><t t-esc="combo.format_weight_g"/>g / <t t-esc="'%.2f' % combo.format_weight_oz"/> oz</td></tr>
+                                <tr><td><strong>Dosificación:</strong></td><td><t t-esc="'%.3f' % combo.dosification_kg_per_bag"/> kg/bolsa (<t t-esc="'%.1f' % (combo.dosification_kg_per_bag / combo.format_weight_g * 1000 * 100)"/>%)</td></tr>
+                                <tr><td><strong>Tipo caja:</strong></td><td><t t-esc="combo.base_id.box_type"/></td></tr>
+                                <tr><td><strong>Bolsas/contenedor:</strong></td><td><t t-esc="combo.bags_per_container"/></td></tr>
+                            </table>
+                        </div>
+                        <div class="col-6">
+                            <h4 style="background:#8e44ad; color:white; padding:5px 10px;">
+                                Supuestos de cálculo
+                            </h4>
+                            <table class="table table-sm">
+                                <tr><td><strong>TC CRC/USD:</strong></td><td>₡<t t-esc="'%.2f' % config.exchange_rate_crc_usd"/></td></tr>
+                                <tr><td><strong>Maquila ADM:</strong></td><td>₡<t t-esc="'%.0f' % combo.base_id.maquila_cost_crc_per_kg"/>/kg</td></tr>
+                                <tr><td><strong>Section 122:</strong></td>
+                                    <td>
+                                        <t t-if="config.section_122_active" style="color:#c0392b;">
+                                            <t t-esc="'%.0f' % (config.section_122_pct * 100)"/>% ACTIVO
+                                        </t>
+                                        <t t-else="">0% (inactivo)</t>
+                                    </td>
+                                </tr>
+                                <tr><td><strong>Margen HR:</strong></td><td><t t-esc="'%.1f' % (config.margin_hr_pct * 100)"/>%</td></tr>
+                                <tr><td><strong>Margen retailer:</strong></td><td><t t-esc="'%.1f' % (config.margin_retailer_pct * 100)"/>%</td></tr>
+                                <tr><td><strong>Fees DTC:</strong></td><td><t t-esc="'%.1f' % (config.dtc_fees_pct * 100)"/>%</td></tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- CASCADA DE PRECIOS -->
+                    <h4 style="background:#c0392b; color:white; padding:5px 10px; margin-top:15px;">
+                        Cascada de Precios EXW → FOB → DDP (USD/bolsa)
+                    </h4>
+                    <table class="table table-bordered" style="font-size:11px;">
+                        <tbody>
+                            <tr style="background:#f9f9f9;">
+                                <td><strong>Maquila ADM</strong></td>
+                                <td style="text-align:right;">$<t t-esc="'%.6f' % combo.cost_maquila_usd"/></td>
+                                <td style="color:#999; font-size:10px;">
+                                    ₡<t t-esc="'%.0f' % combo.base_id.maquila_cost_crc_per_kg"/>/kg ×
+                                    <t t-esc="combo.format_weight_g"/>g ÷ 1000 ÷ TC
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Bolsa laminada (Indupark)</td>
+                                <td style="text-align:right;">$<t t-esc="'%.6f' % combo.cost_bag_usd"/></td>
+                                <td/>
+                            </tr>
+                            <tr style="background:#f9f9f9;">
+                                <td>Condimento (<t t-esc="combo.seasoning_id.name"/>)</td>
+                                <td style="text-align:right;">$<t t-esc="'%.6f' % combo.cost_seasoning_usd"/></td>
+                                <td style="color:#999; font-size:10px;">
+                                    $<t t-esc="'%.2f' % combo.seasoning_id.price_per_kg_usd"/>/kg ×
+                                    <t t-esc="'%.4f' % combo.dosification_kg_per_bag"/> kg
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Caja máster (prorrateo)</td>
+                                <td style="text-align:right;">$<t t-esc="'%.6f' % combo.cost_box_usd"/></td>
+                                <td style="color:#999; font-size:10px;">
+                                    $<t t-esc="'%.2f' % combo.base_id.box_cost_usd"/> ÷
+                                    <t t-esc="combo.base_id.bags_per_box"/> bolsas
+                                </td>
+                            </tr>
+                            <tr style="background:#f9f9f9;">
+                                <td>Tarima (prorrateo)</td>
+                                <td style="text-align:right;">$<t t-esc="'%.6f' % combo.cost_pallet_usd"/></td>
+                                <td/>
+                            </tr>
+                            <tr style="background:#d5e8d4; font-weight:bold; border-top:2px solid #2c7a2c;">
+                                <td>EXW — Ex Works planta ADM Sarapiquí</td>
+                                <td style="text-align:right; font-size:1.1em; color:#2c7a2c;">
+                                    $<t t-esc="'%.6f' % combo.price_exw"/>
+                                </td>
+                                <td/>
+                            </tr>
+                            <tr>
+                                <td style="padding-left:20px; color:#555;">+ Logística origen (trucking + handling + docs)</td>
+                                <td style="text-align:right; color:#2980b9;">+$<t t-esc="'%.6f' % combo.logistics_origin_per_bag"/></td>
+                                <td style="color:#999; font-size:10px;">
+                                    USD<t t-esc="'%.0f' % config.logistics_origin_total_usd"/> ÷
+                                    <t t-esc="combo.bags_per_container"/> bolsas
+                                </td>
+                            </tr>
+                            <tr style="background:#dae8fc; font-weight:bold; border-top:2px solid #2980b9;">
+                                <td>FOB — Free On Board Puerto Limón</td>
+                                <td style="text-align:right; font-size:1.1em; color:#2980b9;">
+                                    $<t t-esc="'%.6f' % combo.price_fob"/>
+                                </td>
+                                <td/>
+                            </tr>
+                            <tr>
+                                <td style="padding-left:20px; color:#555;">+ Flete + seguro + destino</td>
+                                <td style="text-align:right; color:#e67e22;">+$<t t-esc="'%.6f' % combo.logistics_intl_per_bag"/></td>
+                                <td/>
+                            </tr>
+                            <tr>
+                                <td style="padding-left:20px; color:#555;">+ Aranceles US (Sec.122 + HMF + broker + bond)</td>
+                                <td style="text-align:right; color:#e67e22;">+$<t t-esc="'%.6f' % combo.customs_per_bag"/></td>
+                                <td/>
+                            </tr>
+                            <tr style="background:#ffe6cc; font-weight:bold; border-top:2px solid #c0392b;">
+                                <td>DDP — Delivered Duty Paid bodega Miami</td>
+                                <td style="text-align:right; font-size:1.2em; color:#c0392b;">
+                                    $<t t-esc="'%.6f' % combo.price_ddp"/>
+                                </td>
+                                <td/>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- PRECIOS DE VENTA -->
+                    <h4 style="background:#8e44ad; color:white; padding:5px 10px; margin-top:15px;">
+                        Precios de Venta por Canal (USD/bolsa)
+                    </h4>
+                    <div class="row">
+                        <div class="col-4">
+                            <div style="border:2px solid #2c7a2c; padding:10px; text-align:center; border-radius:5px;">
+                                <h5>Canal 1 — Direct-to-Retailer</h5>
+                                <p>Wholesale HR: <strong style="color:#8e44ad; font-size:1.1em;">$<t t-esc="'%.4f' % combo.price_wholesale_direct"/></strong></p>
+                                <p>MSRP: <strong style="color:#c0392b; font-size:1.3em;">$<t t-esc="'%.4f' % combo.price_msrp"/></strong></p>
+                                <p>Margen HR: <strong><t t-esc="'%.1f' % (combo.margin_pct_direct * 100)"/>%</strong></p>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div style="border:2px solid #2980b9; padding:10px; text-align:center; border-radius:5px;">
+                                <h5>Canal 2 — UNFI / KeHE</h5>
+                                <p>Wholesale dist.: <strong style="color:#2980b9; font-size:1.1em;">$<t t-esc="'%.4f' % combo.price_wholesale_distributor"/></strong></p>
+                                <p>MSRP final: <strong style="color:#c0392b;">$<t t-esc="'%.4f' % combo.price_msrp"/></strong></p>
+                                <p>Margen HR: <strong><t t-esc="'%.1f' % (combo.margin_pct_distributor * 100)"/>%</strong></p>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div style="border:2px solid #e67e22; padding:10px; text-align:center; border-radius:5px;">
+                                <h5>Canal 3 — DTC (Shopify/Amazon)</h5>
+                                <p>Precio DTC: <strong style="color:#e67e22; font-size:1.1em;">$<t t-esc="'%.4f' % combo.price_dtc"/></strong></p>
+                                <p>Ganancia HR: <strong style="color:#27ae60;">$<t t-esc="'%.4f' % combo.profit_dtc"/></strong></p>
+                                <p>Margen HR: <strong><t t-esc="'%.1f' % (combo.margin_pct_dtc * 100)"/>%</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MÉTRICAS CONTENEDOR -->
+                    <h4 style="background:#555; color:white; padding:5px 10px; margin-top:15px;">
+                        Métricas por Contenedor 40HC
+                    </h4>
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Total EXW:</strong></td><td>$<t t-esc="'%.2f' % combo.container_total_exw"/></td>
+                            <td><strong>Total FOB:</strong></td><td>$<t t-esc="'%.2f' % combo.container_total_fob"/></td>
+                            <td><strong>Total DDP:</strong></td><td><strong style="color:#c0392b;">$<t t-esc="'%.2f' % combo.container_total_ddp"/></strong></td>
+                            <td><strong>DDP/kg neto:</strong></td><td>$<t t-esc="'%.4f' % combo.container_ddp_per_kg"/></td>
+                        </tr>
+                    </table>
+
+                    <!-- PIE -->
+                    <div class="mt-3" style="border-top:1px solid #ccc; padding-top:8px; font-size:9px; color:#999;">
+                        <strong><t t-esc="combo.channel_recommendation"/></strong> ·
+                        MSRP/oz: $<t t-esc="'%.4f' % combo.price_per_oz_msrp"/> ·
+                        vs benchmark: $<t t-esc="'%.4f' % combo.vs_benchmark_per_oz"/>/oz ·
+                        Confidencial · Happy Roots ·
+                        <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+</odoo>
