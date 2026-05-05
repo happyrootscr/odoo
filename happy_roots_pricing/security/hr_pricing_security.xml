@@ -8,7 +8,6 @@
         <record id="group_hr_pricing_manager" model="res.groups">
             <field name="name">Happy Roots: Gerente de Pricing</field>
             <field name="implied_ids" eval="[(4, ref('group_hr_pricing_user'))]"/>
-            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
         </record>
     </data>
 </odoo>
