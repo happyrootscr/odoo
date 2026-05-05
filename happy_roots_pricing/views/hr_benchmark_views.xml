@@ -75,7 +75,6 @@
             <search string="Buscar competidores">
                 <field name="name"/>
                 <field name="product_name"/>
-                <separator/>
                 <filter name="tier1" string="Tier 1 Premium"
                         domain="[('tier', '=', '1')]"/>
                 <filter name="tier2" string="Tier 2 Ethnic"

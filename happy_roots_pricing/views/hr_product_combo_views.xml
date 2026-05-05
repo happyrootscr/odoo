@@ -178,10 +178,7 @@
                 <field name="base_id" optional="show"/>
                 <field name="seasoning_id" optional="show"/>
                 <field name="format_weight_g" optional="show"/>
-                <field name="state" widget="badge"
-                       decoration-success="state == 'active'"
-                       decoration-warning="state == 'draft'"
-                       decoration-danger="state == 'discontinued'"/>
+                <field name="state" widget="badge"/>
                 <!-- Cascada de precios -->
                 <field name="price_exw" string="EXW" digits="[10,4]"
                        optional="show" class="hr_price_exw"/>
@@ -219,12 +216,10 @@
                 <field name="internal_code"/>
                 <field name="base_id"/>
                 <field name="seasoning_id"/>
-                <separator/>
                 <filter name="active" string="Activos" domain="[('state','=','active')]"/>
                 <filter name="draft" string="Borradores" domain="[('state','=','draft')]"/>
                 <filter name="discontinued" string="Descontinuados"
                         domain="[('state','=','discontinued')]"/>
-                <separator/>
                 <filter name="below_market" string="Precio bajo vs mercado"
                         domain="[('benchmark_status','=','below_market')]"/>
                 <filter name="without_product" string="Sin producto Odoo vinculado"
