@@ -19,7 +19,7 @@
                             <field name="exchange_rate_crc_usd" string="TC CRC/USD"/>
                             <field name="section_122_active"/>
                             <field name="section_122_pct" widget="percentage"
-                                   attrs="{'readonly': [('section_122_active', '=', False)]}"/>
+                                   readonly="section_122_active == False"/>
                         </group>
                         <group>
                             <field name="margin_hr_pct" widget="percentage"/>
@@ -38,7 +38,7 @@
                     </footer>
                 </sheet>
                 <!-- Resultados simulados -->
-                <sheet attrs="{'invisible': [('result_ids', '=', [])]}">
+                <sheet invisible="not result_ids">
                     <separator string="Resultados — comparación actual vs simulado"/>
                     <field name="result_ids" readonly="1">
                         <list decoration-danger="ddp_delta_pct > 5"

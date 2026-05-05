@@ -16,7 +16,7 @@
                             type="object"
                             string="↗ Sincronizar con Odoo Pricelists"
                             class="btn-primary"
-                            attrs="{'invisible': [('product_id', '=', False)]}"/>
+                            invisible="product_id == False"/>
                 </header>
                 <sheet>
                     <!-- Smart buttons -->
@@ -25,7 +25,7 @@
                                 type="object"
                                 class="oe_stat_button"
                                 icon="fa-cube"
-                                attrs="{'invisible': [('product_id', '=', False)]}">
+                                invisible="product_id == False">
                             <div class="o_stat_info">
                                 <span class="o_stat_text">Producto Odoo</span>
                             </div>
@@ -205,7 +205,6 @@
                        widget="percentage" digits="[6,2]" optional="show"/>
                 <field name="channel_recommendation" optional="show"/>
                 <field name="benchmark_status" column_invisible="1"/>
-                <field name="state" column_invisible="1"/>
             </list>
         </field>
     </record>

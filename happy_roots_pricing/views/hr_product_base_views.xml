@@ -49,8 +49,8 @@
                         <group string="Margen HR">
                             <field name="margin_hr_override" widget="boolean_toggle"/>
                             <field name="margin_hr_custom_pct" widget="percentage"
-                                   attrs="{'invisible': [('margin_hr_override', '=', False)],
-                                           'required': [('margin_hr_override', '=', True)]}"/>
+                                   invisible="margin_hr_override == False"
+                                   required="margin_hr_override == True"/>
                             <field name="min_ddp_usd" readonly="1" digits="[10,6]"/>
                         </group>
                         <group string="Precios calculados (USD/bolsa)">

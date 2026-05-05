@@ -103,12 +103,12 @@
                                 <group>
                                     <field name="section_122_active"/>
                                     <field name="section_122_pct" widget="percentage"
-                                           attrs="{'readonly': [('section_122_active', '=', False)]}"/>
+                                           readonly="section_122_active == False"/>
                                     <field name="section_122_expiry"/>
                                 </group>
                                 <group>
                                     <div class="alert alert-warning" role="alert"
-                                         attrs="{'invisible': [('section_122_active', '=', False)]}">
+                                         invisible="section_122_active == False">
                                         <strong>⚠ Section 122 activa.</strong>
                                         Vigente hasta julio 2026. Cuando venza, desmarcar
                                         "Section 122 activo" y recalcular para ver precios post-surcharge.

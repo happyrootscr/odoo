@@ -19,20 +19,20 @@
                         <group string="Canal 1 — Wholesale directo">
                             <field name="sync_direct" widget="boolean_toggle"/>
                             <field name="pricelist_direct_id"
-                                   attrs="{'required': [('sync_direct', '=', True)]}"/>
+                                   required="sync_direct == True"/>
                         </group>
                         <group string="Canal 2 — Distribuidor UNFI/KeHE">
                             <field name="sync_distributor" widget="boolean_toggle"/>
                             <field name="pricelist_distributor_id"
-                                   attrs="{'required': [('sync_distributor', '=', True)]}"/>
+                                   required="sync_distributor == True"/>
                         </group>
                         <group string="Canal 3 — DTC Shopify/Amazon">
                             <field name="sync_dtc" widget="boolean_toggle"/>
                             <field name="pricelist_dtc_id"
-                                   attrs="{'required': [('sync_dtc', '=', True)]}"/>
+                                   required="sync_dtc == True"/>
                         </group>
                     </group>
-                    <group attrs="{'invisible': [('result_summary', '=', False)]}">
+                    <group invisible="not result_summary">
                         <field name="result_summary" readonly="1" widget="text"/>
                     </group>
                     <footer>

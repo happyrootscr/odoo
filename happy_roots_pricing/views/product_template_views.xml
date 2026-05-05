@@ -11,7 +11,7 @@
                         type="object"
                         class="oe_stat_button"
                         icon="fa-bar-chart"
-                        attrs="{'invisible': [('hr_combo_count', '=', 0)]}">
+                        invisible="hr_combo_count == 0">
                     <field name="hr_combo_count" widget="statinfo"
                            string="Pricing HR"/>
                 </button>
