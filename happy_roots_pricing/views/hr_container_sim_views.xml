@@ -7,10 +7,7 @@
             <form string="Simulador de Contenedor y Proyección">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirmed"/>
-                    <button name="%(action_hr_container_sim)d"
-                            type="action"
-                            string="Nueva simulación"
-                            class="btn-secondary"/>
+
                 </header>
                 <sheet>
                     <div class="oe_title">
