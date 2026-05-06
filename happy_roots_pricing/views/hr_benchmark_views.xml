@@ -79,12 +79,6 @@
                         domain="[('tier', '=', '2')]"/>
                 <filter name="filter_direct" string="Competidores directos"
                         domain="[('is_direct_competitor', '=', True)]"/>
-                <group expand="0" string="Agrupar por">
-                    <filter name="group_tier" string="Tier"
-                            context="{'group_by': 'tier'}"/>
-                    <filter name="group_channel" string="Canal"
-                            context="{'group_by': 'channel'}"/>
-                </group>
             </search>
         </field>
     </record>

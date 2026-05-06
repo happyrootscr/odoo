@@ -217,21 +217,10 @@
                 <field name="base_id"/>
                 <field name="seasoning_id"/>
                 <filter name="filter_active" string="Activos" domain="[('state','=','active')]"/>
-                <filter name="draft" string="Borradores" domain="[('state','=','draft')]"/>
-                <filter name="discontinued" string="Descontinuados"
-                        domain="[('state','=','discontinued')]"/>
-                <filter name="below_market" string="Precio bajo vs mercado"
-                        domain="[('benchmark_status','=','below_market')]"/>
-                <filter name="without_product" string="Sin producto Odoo vinculado"
-                        domain="[('product_id','=',False)]"/>
-                <group expand="0" string="Agrupar por">
-                    <filter name="group_base" string="SKU Base"
-                            context="{'group_by': 'base_id'}"/>
-                    <filter name="group_seasoning" string="Condimento"
-                            context="{'group_by': 'seasoning_id'}"/>
-                    <filter name="group_state" string="Estado"
-                            context="{'group_by': 'state'}"/>
-                </group>
+                <filter name="filter_draft" string="Borradores" domain="[('state','=','draft')]"/>
+                <filter name="filter_discontinued" string="Descontinuados" domain="[('state','=','discontinued')]"/>
+                <filter name="filter_below_market" string="Precio bajo vs mercado" domain="[('benchmark_status','=','below_market')]"/>
+                <filter name="filter_no_product" string="Sin producto Odoo" domain="[('product_id','=',False)]"/>
             </search>
         </field>
     </record>
