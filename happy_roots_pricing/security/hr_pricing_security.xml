@@ -9,5 +9,10 @@
             <field name="name">Happy Roots: Gerente de Pricing</field>
             <field name="implied_ids" eval="[(4, ref('group_hr_pricing_user'))]"/>
         </record>
+
+        <!-- Odoo administrators automatically get full pricing manager access -->
+        <record id="base.group_system" model="res.groups">
+            <field name="implied_ids" eval="[(4, ref('group_hr_pricing_manager'))]"/>
+        </record>
     </data>
 </odoo>
