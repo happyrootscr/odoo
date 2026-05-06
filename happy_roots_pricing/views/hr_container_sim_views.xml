@@ -36,9 +36,7 @@
                                     <field name="channel_distributor_pct" widget="percentage"/>
                                     <field name="channel_dtc_pct" widget="percentage"/>
                                     <field name="channel_total_pct" readonly="1"
-                                           widget="percentage"
-                                           decoration-danger="not channel_mix_valid"
-                                           decoration-success="channel_mix_valid"/>
+                                           widget="percentage"/>
                                     <field name="channel_mix_valid" invisible="1"/>
                                 </group>
                             </group>
