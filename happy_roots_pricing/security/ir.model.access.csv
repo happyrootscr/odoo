@@ -1,18 +1,18 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hr_pricing_config_user,hr.pricing.config user,model_hr_pricing_config,group_hr_pricing_user,1,0,0,0
+access_hr_pricing_config_user,hr.pricing.config user,model_hr_pricing_config,base.group_user,1,0,0,0
 access_hr_pricing_config_manager,hr.pricing.config manager,model_hr_pricing_config,group_hr_pricing_manager,1,1,1,0
-access_hr_seasoning_user,hr.seasoning user,model_hr_seasoning,group_hr_pricing_user,1,0,0,0
+access_hr_seasoning_user,hr.seasoning user,model_hr_seasoning,base.group_user,1,0,0,0
 access_hr_seasoning_manager,hr.seasoning manager,model_hr_seasoning,group_hr_pricing_manager,1,1,1,1
-access_hr_product_base_user,hr.product.base user,model_hr_product_base,group_hr_pricing_user,1,0,0,0
+access_hr_product_base_user,hr.product.base user,model_hr_product_base,base.group_user,1,0,0,0
 access_hr_product_base_manager,hr.product.base manager,model_hr_product_base,group_hr_pricing_manager,1,1,1,1
-access_hr_product_combo_user,hr.product.combo user,model_hr_product_combo,group_hr_pricing_user,1,0,0,0
+access_hr_product_combo_user,hr.product.combo user,model_hr_product_combo,base.group_user,1,0,0,0
 access_hr_product_combo_manager,hr.product.combo manager,model_hr_product_combo,group_hr_pricing_manager,1,1,1,1
-access_hr_container_sim_user,hr.container.sim user,model_hr_container_sim,group_hr_pricing_user,1,1,1,0
+access_hr_container_sim_user,hr.container.sim user,model_hr_container_sim,base.group_user,1,1,1,0
 access_hr_container_sim_manager,hr.container.sim manager,model_hr_container_sim,group_hr_pricing_manager,1,1,1,1
-access_hr_container_sim_line_user,hr.container.sim.line user,model_hr_container_sim_line,group_hr_pricing_user,1,1,1,0
+access_hr_container_sim_line_user,hr.container.sim.line user,model_hr_container_sim_line,base.group_user,1,1,1,0
 access_hr_container_sim_line_manager,hr.container.sim.line manager,model_hr_container_sim_line,group_hr_pricing_manager,1,1,1,1
-access_hr_benchmark_user,hr.benchmark.competitor user,model_hr_benchmark_competitor,group_hr_pricing_user,1,0,0,0
+access_hr_benchmark_user,hr.benchmark.competitor user,model_hr_benchmark_competitor,base.group_user,1,0,0,0
 access_hr_benchmark_manager,hr.benchmark.competitor manager,model_hr_benchmark_competitor,group_hr_pricing_manager,1,1,1,1
-access_hr_scenario_wizard_user,hr.scenario.wizard user,model_hr_scenario_wizard,group_hr_pricing_user,1,1,1,1
-access_hr_scenario_wizard_line_user,hr.scenario.wizard.line user,model_hr_scenario_wizard_line,group_hr_pricing_user,1,1,1,1
+access_hr_scenario_wizard_user,hr.scenario.wizard user,model_hr_scenario_wizard,base.group_user,1,1,1,1
+access_hr_scenario_wizard_line_user,hr.scenario.wizard.line user,model_hr_scenario_wizard_line,base.group_user,1,1,1,1
 access_hr_pricelist_push_manager,hr.pricelist.push.wizard manager,model_hr_pricelist_push_wizard,group_hr_pricing_manager,1,1,1,1
