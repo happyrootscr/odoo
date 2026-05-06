@@ -15,7 +15,7 @@ class HrSeasoning(models.Model):
     name = fields.Char('Nombre del condimento', required=True)
     code = fields.Char('Código proveedor', help='Código Maluquer (ej. 72889, 72656)')
     display_name_full = fields.Char(
-        compute='_compute_display_name', store=True, string='Nombre completo')
+        compute='_compute_display', store=True, string='Nombre completo')
 
     price_per_kg_usd = fields.Float(
         'Precio USD/kg', required=True, digits=(10, 4),
@@ -43,7 +43,7 @@ class HrSeasoning(models.Model):
     combo_count = fields.Integer(compute='_compute_combo_count', string='# Combos')
 
     @api.depends('name', 'code')
-    def _compute_display_name(self):
+    def _compute_display(self):
         for rec in self:
             rec.display_name_full = (
                 f'{rec.name} [{rec.code}]' if rec.code else rec.name
