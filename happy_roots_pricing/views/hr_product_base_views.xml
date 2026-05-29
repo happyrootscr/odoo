@@ -31,7 +31,9 @@
                         </group>
                     </group>
                     <group>
-                        <group string="Bolsas Indupark">
+                        <group string="Bolsas INDELSA">
+                            <field name="bag_rendimiento"
+                                   help="Cambiar este valor recalcula el costo de bolsa automáticamente."/>
                             <field name="bag_cost_usd" digits="[10,6]"/>
                             <field name="bag_dimensions"/>
                             <field name="bag_supplier_id"/>

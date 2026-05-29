@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Smart button en el producto nativo de Odoo -->
     <record id="view_product_template_inherit_hr" model="ir.ui.view">
         <field name="name">product.template.inherit.hr.pricing</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
+
+            <!-- Smart button -->
             <xpath expr="//div[@name='button_box']" position="inside">
                 <button name="action_view_hr_combos"
                         type="object"
@@ -15,6 +16,58 @@
                     <field name="hr_combo_count" widget="statinfo"
                            string="Pricing HR"/>
                 </button>
+            </xpath>
+
+            <!-- Página completa de precios HR en el notebook del producto -->
+            <xpath expr="//notebook" position="inside">
+                <page string="💰 Precios Happy Roots" name="hr_pricing"
+                      invisible="hr_combo_count == 0">
+                    <div class="alert alert-info" role="alert">
+                        Precios calculados por el motor de pricing Happy Roots.
+                        Para actualizar, vé a <strong>Happy Roots Pricing → Resumen Ejecutivo</strong>
+                        y usa el botón "Sincronizar con Pricelists".
+                    </div>
+                    <field name="hr_combo_ids" readonly="1">
+                        <list>
+                            <field name="internal_code" string="Código"/>
+                            <field name="name" string="Combo"/>
+                            <field name="format_weight_g" string="g"/>
+                            <field name="state" widget="badge"/>
+                            <field name="price_exw" string="EXW" digits="[10,4]"
+                                   class="hr_price_exw"/>
+                            <field name="price_fob" string="FOB Limón" digits="[10,4]"/>
+                            <field name="price_ddp" string="DDP Miami" digits="[10,4]"
+                                   class="hr_price_ddp"/>
+                            <field name="price_wholesale_direct" string="Wholesale HR"
+                                   digits="[10,4]" class="hr_price_wholesale"/>
+                            <field name="price_wholesale_distributor" string="Dist."
+                                   digits="[10,4]"/>
+                            <field name="price_msrp" string="MSRP" digits="[10,4]"
+                                   class="hr_price_msrp"/>
+                            <field name="price_dtc" string="DTC" digits="[10,4]"/>
+                            <field name="margin_pct_direct" string="Margen %"
+                                   widget="percentage" digits="[6,2]"/>
+                        </list>
+                    </field>
+                    <separator string="Precios por destino de exportación"/>
+                    <field name="hr_destination_price_ids" readonly="1">
+                        <list>
+                            <field name="destination_id" string="Destino"/>
+                            <field name="price_exw" string="EXW" digits="[10,4]"
+                                   class="hr_price_exw"/>
+                            <field name="price_fob" string="FOB" digits="[10,4]"/>
+                            <field name="price_cif" string="CIF" digits="[10,4]"/>
+                            <field name="price_ddp" string="DDP" digits="[10,4]"
+                                   class="hr_price_ddp"/>
+                            <field name="price_wholesale_direct" string="Wholesale"
+                                   digits="[10,4]" class="hr_price_wholesale"/>
+                            <field name="price_msrp" string="MSRP" digits="[10,4]"
+                                   class="hr_price_msrp"/>
+                            <field name="price_amazon" string="Amazon" digits="[10,4]"
+                                   optional="show"/>
+                        </list>
+                    </field>
+                </page>
             </xpath>
         </field>
     </record>

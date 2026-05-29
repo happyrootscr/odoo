@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- USA — Miami (DDP) -->
+        <record id="dest_usa_miami" model="hr.destination">
+            <field name="sequence">10</field>
+            <field name="name">USA — Miami (DDP)</field>
+            <field name="country_id" ref="base.us"/>
+            <field name="port_arrival">Miami, FL</field>
+            <field name="freight_per_container_usd">3500.0</field>
+            <field name="insurance_pct">0.5</field>
+            <field name="tariff_pct">0.0</field>
+            <field name="customs_fixed_per_container">850.0</field>
+            <field name="last_mile_per_bag_usd">0.05</field>
+            <field name="has_direct_channel">True</field>
+            <field name="has_distributor_channel">True</field>
+            <field name="has_dtc_channel">True</field>
+            <field name="has_amazon_channel">True</field>
+            <field name="amazon_fee_pct">15.0</field>
+            <field name="amazon_fba_per_unit_usd">0.0</field>
+        </record>
+
+        <!-- USA — Los Angeles -->
+        <record id="dest_usa_la" model="hr.destination">
+            <field name="sequence">20</field>
+            <field name="name">USA — Los Ángeles (DDP)</field>
+            <field name="country_id" ref="base.us"/>
+            <field name="port_arrival">Los Angeles, CA</field>
+            <field name="freight_per_container_usd">3800.0</field>
+            <field name="insurance_pct">0.5</field>
+            <field name="tariff_pct">0.0</field>
+            <field name="customs_fixed_per_container">850.0</field>
+            <field name="last_mile_per_bag_usd">0.06</field>
+            <field name="has_direct_channel">True</field>
+            <field name="has_distributor_channel">True</field>
+            <field name="has_dtc_channel">True</field>
+            <field name="has_amazon_channel">True</field>
+            <field name="amazon_fee_pct">15.0</field>
+        </record>
+
+        <!-- México — CDMX -->
+        <record id="dest_mexico_cdmx" model="hr.destination">
+            <field name="sequence">30</field>
+            <field name="name">México — CDMX (DDP)</field>
+            <field name="country_id" ref="base.mx"/>
+            <field name="port_arrival">Veracruz / CDMX</field>
+            <field name="freight_per_container_usd">2800.0</field>
+            <field name="insurance_pct">0.5</field>
+            <field name="tariff_pct">20.0</field>
+            <field name="customs_fixed_per_container">1200.0</field>
+            <field name="last_mile_per_bag_usd">0.08</field>
+            <field name="has_direct_channel">True</field>
+            <field name="has_distributor_channel">True</field>
+            <field name="has_dtc_channel">False</field>
+            <field name="has_amazon_channel">False</field>
+        </record>
+
+        <!-- Unión Europea — Rotterdam -->
+        <record id="dest_eu_rotterdam" model="hr.destination">
+            <field name="sequence">40</field>
+            <field name="name">UE — Rotterdam (DDP)</field>
+            <field name="country_id" ref="base.nl"/>
+            <field name="port_arrival">Rotterdam, NL</field>
+            <field name="freight_per_container_usd">5200.0</field>
+            <field name="insurance_pct">0.5</field>
+            <field name="tariff_pct">6.4</field>
+            <field name="customs_fixed_per_container">1500.0</field>
+            <field name="last_mile_per_bag_usd">0.10</field>
+            <field name="has_direct_channel">True</field>
+            <field name="has_distributor_channel">True</field>
+            <field name="has_dtc_channel">False</field>
+            <field name="has_amazon_channel">False</field>
+        </record>
+
+        <!-- FOB Puerto Limón (para compradores que recogen en origen) -->
+        <record id="dest_fob_limon" model="hr.destination">
+            <field name="sequence">5</field>
+            <field name="name">FOB — Puerto Limón CR</field>
+            <field name="country_id" ref="base.cr"/>
+            <field name="port_arrival">Puerto Limón, CR</field>
+            <field name="freight_per_container_usd">0.0</field>
+            <field name="insurance_pct">0.0</field>
+            <field name="tariff_pct">0.0</field>
+            <field name="customs_fixed_per_container">0.0</field>
+            <field name="last_mile_per_bag_usd">0.0</field>
+            <field name="has_direct_channel">True</field>
+            <field name="has_distributor_channel">True</field>
+            <field name="has_dtc_channel">False</field>
+            <field name="has_amazon_channel">False</field>
+        </record>
+
+    </data>
+
+    <!-- Actualizar incoterm_type en destinos existentes (noupdate=0 para que sí aplique en upgrade) -->
+    <data noupdate="0">
+        <record id="dest_fob_limon" model="hr.destination">
+            <field name="incoterm_type">fob</field>
+        </record>
+        <record id="dest_usa_miami" model="hr.destination">
+            <field name="incoterm_type">ddp</field>
+        </record>
+        <record id="dest_usa_la" model="hr.destination">
+            <field name="incoterm_type">ddp</field>
+        </record>
+        <record id="dest_mexico_cdmx" model="hr.destination">
+            <field name="incoterm_type">ddp</field>
+        </record>
+        <record id="dest_eu_rotterdam" model="hr.destination">
+            <field name="incoterm_type">ddp</field>
+        </record>
+    </data>
+</odoo>

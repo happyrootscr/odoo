@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ═══════════════════════════════════════════════════════════════════
+         FORM VIEW — Destino de exportación
+         ═══════════════════════════════════════════════════════════════════ -->
+    <record id="view_hr_destination_form" model="ir.ui.view">
+        <field name="name">hr.destination.form</field>
+        <field name="model">hr.destination</field>
+        <field name="arch" type="xml">
+            <form string="Destino de Exportación">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                        <h2><field name="country_id"/></h2>
+                    </div>
+                    <group>
+                        <group string="Identificación">
+                            <field name="sequence"/>
+                            <field name="port_arrival"/>
+                            <field name="incoterm_type"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                        <group string="Canales disponibles">
+                            <field name="has_direct_channel" widget="boolean_toggle"/>
+                            <field name="has_distributor_channel" widget="boolean_toggle"/>
+                            <field name="has_dtc_channel" widget="boolean_toggle"/>
+                            <field name="has_amazon_channel" widget="boolean_toggle"/>
+                            <field name="amazon_fee_pct" widget="percentage"
+                                   invisible="not has_amazon_channel"/>
+                            <field name="amazon_fba_per_unit_usd"
+                                   invisible="not has_amazon_channel"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="🚢 Flete marítimo (Puerto Limón → destino)">
+                            <field name="freight_per_container_usd"/>
+                            <field name="insurance_pct" widget="percentage"/>
+                        </group>
+                        <group string="🛃 Aduanas y aranceles destino">
+                            <field name="tariff_pct" widget="percentage"/>
+                            <field name="customs_fixed_per_container"/>
+                            <field name="last_mile_per_bag_usd"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="📊 Precios por combo" name="prices">
+                            <field name="combo_price_ids" readonly="1">
+                                <list>
+                                    <field name="combo_id" string="Combo"/>
+                                    <field name="format_weight_g" string="g"/>
+                                    <!-- EXW y FOB: siempre visibles -->
+                                    <field name="price_exw" string="EXW CR"
+                                           digits="[10,4]" class="hr_price_exw"/>
+                                    <field name="price_fob" string="FOB Limón"
+                                           digits="[10,4]"/>
+                                    <!-- CIF: visible para CIF y DDP, oculto para FOB -->
+                                    <field name="price_cif" string="CIF Puerto"
+                                           digits="[10,4]"
+                                           column_invisible="parent.incoterm_type == 'fob'"/>
+                                    <!-- DDP y canales: solo visible para DDP -->
+                                    <field name="price_ddp" string="DDP Cliente"
+                                           digits="[10,4]" class="hr_price_ddp"
+                                           column_invisible="parent.incoterm_type in ['fob', 'cif']"/>
+                                    <field name="price_wholesale_direct" string="Wholesale HR"
+                                           digits="[10,4]" class="hr_price_wholesale"
+                                           column_invisible="parent.incoterm_type in ['fob', 'cif']"/>
+                                    <field name="price_wholesale_distributor" string="Dist."
+                                           digits="[10,4]"
+                                           column_invisible="parent.incoterm_type in ['fob', 'cif']"/>
+                                    <field name="price_msrp" string="MSRP"
+                                           digits="[10,4]" class="hr_price_msrp"
+                                           column_invisible="parent.incoterm_type in ['fob', 'cif']"/>
+                                    <field name="price_dtc" string="DTC"
+                                           digits="[10,4]"
+                                           column_invisible="parent.incoterm_type in ['fob', 'cif']"/>
+                                    <field name="price_amazon" string="Amazon"
+                                           digits="[10,4]" optional="show"
+                                           column_invisible="parent.incoterm_type in ['fob', 'cif']"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="📝 Notas" name="notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- LIST VIEW -->
+    <record id="view_hr_destination_list" model="ir.ui.view">
+        <field name="name">hr.destination.list</field>
+        <field name="model">hr.destination</field>
+        <field name="arch" type="xml">
+            <list string="Destinos de Exportación">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="country_id"/>
+                <field name="port_arrival"/>
+                <field name="freight_per_container_usd" string="Flete 40HC"/>
+                <field name="tariff_pct" string="Arancel" widget="percentage"/>
+                <field name="has_amazon_channel" optional="show"/>
+                <field name="combo_price_count" string="# Precios"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="action_hr_destination" model="ir.actions.act_window">
+        <field name="name">Destinos de Exportación</field>
+        <field name="res_model">hr.destination</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Agregar primer destino</p>
+            <p>Define los mercados de exportación con sus costos logísticos
+               para calcular precios EXW / FOB / CIF / DDP automáticamente.</p>
+        </field>
+    </record>
+</odoo>

@@ -55,13 +55,30 @@ class HrProductBase(models.Model):
     # ─── 3. BOLSAS INDUPARK ───────────────────────────────────────────────────
     bag_cost_usd = fields.Float(
         'Costo bolsa laminada (USD/bolsa)', required=True, digits=(10, 6),
-        help='BOPP MATE 17u. Fuente: cotización Indupark abril 2026.')
+        help='Costo por bolsa. Se calcula como: precio_film_INDELSA (USD/kg) ÷ rendimiento (bolsas/kg). '
+             'Se actualiza automáticamente al cambiar el Rendimiento INDELSA.')
+    bag_rendimiento = fields.Integer(
+        'Rendimiento INDELSA (bolsas/kg film)', default=0,
+        help='Número de bolsas que se obtiene por kilogramo de film BOPP de INDELSA. '
+             'Depende del tamaño de la bolsa y el micronaje elegido. '
+             '63 micras (BOPP 20/BOPP40) — bobina 305mm×370mm: 150 bolsas/kg para formatos 126g y 155g. '
+             'Al cambiar este campo se recalcula automáticamente el Costo bolsa. '
+             '0 = rendimiento pendiente de cotización INDELSA para este formato.')
     bag_dimensions = fields.Char(
-        'Dimensiones bolsa', help='Ej: 160×230mm (126g), 170×280mm (340g)')
+        'Dimensiones / especificación bolsa',
+        help='Ej: 305mm bobina × 370mm · 63 micras BOPP 20/BOPP40 · INDELSA')
     bag_supplier_id = fields.Many2one(
         'res.partner', 'Proveedor bolsas',
         domain=[('supplier_rank', '>', 0)],
-        help='Indupark — proveedor de bolsas laminadas en Costa Rica.')
+        help='INDELSA — Industrias Elegantes S.A. (desde mayo 2026). '
+             'Contacto: Luis Salgado luiss@indelsaccr.com · Tel: 2272-1282 ext 806.')
+
+    @api.onchange('bag_rendimiento')
+    def _onchange_bag_rendimiento(self):
+        if self.bag_rendimiento > 0:
+            config = self.env['hr.pricing.config'].get_config()
+            film_price = config.bag_film_price_usd_per_kg or 10.0
+            self.bag_cost_usd = film_price / self.bag_rendimiento
 
     # ─── 4. CAJAS MÁSTER ─────────────────────────────────────────────────────
     box_cost_usd = fields.Float(

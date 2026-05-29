@@ -12,11 +12,7 @@
                 <header>
                     <field name="state" widget="statusbar"
                            statusbar_visible="draft,active,discontinued"/>
-                    <button name="action_push_to_pricelists"
-                            type="object"
-                            string="↗ Sincronizar con Odoo Pricelists"
-                            class="btn-primary"
-                            invisible="product_id == False"/>
+                    <!-- Pricelists se sincronizan AUTOMÁTICAMENTE cuando cambia cualquier precio -->
                 </header>
                 <sheet>
                     <!-- Smart buttons -->

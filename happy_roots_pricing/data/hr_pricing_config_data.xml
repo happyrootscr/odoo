@@ -14,6 +14,9 @@
             <field name="pallet_cost_usd">18.0</field>
             <field name="pallets_per_container">22</field>
 
+            <!-- Bolsas INDELSA (desde mayo 2026) -->
+            <field name="bag_film_price_usd_per_kg">10.0</field>
+
             <!-- Logística origen CR -->
             <field name="trucking_origin_usd">500.0</field>
             <field name="handling_port_usd">350.0</field>

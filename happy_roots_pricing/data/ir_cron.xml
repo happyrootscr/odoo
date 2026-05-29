@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Alerta automática: Section 122 próxima a vencer (30 días) -->
+        <record id="cron_section_122_alert" model="ir.cron">
+            <field name="name">Happy Roots — Alerta vencimiento Section 122</field>
+            <field name="model_id" ref="model_hr_pricing_config"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_check_section_122()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+        </record>
+
+        <!-- Recompute de respaldo diario: precios por destino + pricelists -->
+        <record id="cron_destination_price_recompute" model="ir.cron">
+            <field name="name">Happy Roots — Recompute diario precios por destino</field>
+            <field name="model_id" ref="model_hr_destination_price"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_recompute_all()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+        </record>
+
+    </data>
+</odoo>

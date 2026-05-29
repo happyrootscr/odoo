@@ -15,4 +15,7 @@ access_hr_benchmark_user,hr.benchmark.competitor user,model_hr_benchmark_competi
 access_hr_benchmark_manager,hr.benchmark.competitor manager,model_hr_benchmark_competitor,group_hr_pricing_manager,1,1,1,1
 access_hr_scenario_wizard_user,hr.scenario.wizard user,model_hr_scenario_wizard,base.group_user,1,1,1,1
 access_hr_scenario_wizard_line_user,hr.scenario.wizard.line user,model_hr_scenario_wizard_line,base.group_user,1,1,1,1
-access_hr_pricelist_push_manager,hr.pricelist.push.wizard manager,model_hr_pricelist_push_wizard,group_hr_pricing_manager,1,1,1,1
+access_hr_destination_user,hr.destination user,model_hr_destination,base.group_user,1,0,0,0
+access_hr_destination_manager,hr.destination manager,model_hr_destination,group_hr_pricing_manager,1,1,1,1
+access_hr_destination_price_user,hr.destination.price user,model_hr_destination_price,base.group_user,1,0,0,0
+access_hr_destination_price_manager,hr.destination.price manager,model_hr_destination_price,group_hr_pricing_manager,1,1,1,1

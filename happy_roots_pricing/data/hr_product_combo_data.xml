@@ -170,12 +170,51 @@
             <field name="seasoning_id" ref="seasoning_romero_mantequilla"/>
             <field name="dosification_kg_per_bag">0.05</field>
             <field name="state">active</field>
-            <field name="channel_recommendation">Premium shelf · natural channel</field>
+            <field name="channel_recommendation">Premium shelf · natural channel · EN PAUSA</field>
             <field name="notes">
+                EN PAUSA — formato 340g en revisión (mayo 2026). Trabajar con MIX155-ROM.
                 Companion SKU al MIX340-MED. Bundle pack premium = MED + ROM.
                 Condimento SUPUESTO: confirmar precio Maluquer.
-                Mismo MSRP que MIX340-MED por ser mismo SKU base.
                 Canal DTC Amazon muy viable: margen ~55% después de fees plataforma.
+            </field>
+        </record>
+
+        <!-- ── 11. MIXTO 155g × MEDITERRÁNEO (NUEVO mayo 2026) ───────────── -->
+        <record id="combo_mix155_med" model="hr.product.combo">
+            <field name="sequence">110</field>
+            <field name="internal_code">MIX155-MED</field>
+            <field name="name">Mixto 155g — Mediterráneo</field>
+            <field name="base_id" ref="base_mixto_155g"/>
+            <field name="seasoning_id" ref="seasoning_mediterraneo"/>
+            <field name="dosification_kg_per_bag">0.05</field>
+            <field name="state">active</field>
+            <field name="channel_recommendation">Diferenciador · formato principal mix · mayo 2026</field>
+            <field name="notes">
+                SKU principal de la línea mix en formato 155g.
+                Bolsa 63 micras INDELSA premium · Maquila ADM ₡4,500/kg.
+                Costo bolsa INDELSA: $10/kg ÷ 160 bolsas/kg = $0.0625/bolsa.
+                Condimento Mediterráneo confirmado Maluquer (código 72721).
+                Canal priority: Whole Foods, Sprouts, Thrive Market.
+                Contenedor estimado: 27,720 bolsas — confirmar con ADM Don Mariano.
+            </field>
+        </record>
+
+        <!-- ── 12. MIXTO 155g × ROMERO MANTEQUILLA (NUEVO mayo 2026) ────── -->
+        <record id="combo_mix155_rom" model="hr.product.combo">
+            <field name="sequence">120</field>
+            <field name="internal_code">MIX155-ROM</field>
+            <field name="name">Mixto 155g — Romero Mantequilla</field>
+            <field name="base_id" ref="base_mixto_155g"/>
+            <field name="seasoning_id" ref="seasoning_romero_mantequilla"/>
+            <field name="dosification_kg_per_bag">0.05</field>
+            <field name="state">active</field>
+            <field name="channel_recommendation">Diferenciador · bundle con Mediterráneo · mayo 2026</field>
+            <field name="notes">
+                Companion SKU al MIX155-MED. Bundle premium: Mediterráneo + Romero 155g.
+                Bolsa 63 micras INDELSA premium · Maquila ADM ₡4,500/kg.
+                Costo bolsa INDELSA: $10/kg ÷ 160 bolsas/kg = $0.0625/bolsa.
+                Condimento Romero Mantequilla SUPUESTO: confirmar precio Maluquer.
+                Mismo MSRP que MIX155-MED por ser el mismo SKU base.
             </field>
         </record>
 

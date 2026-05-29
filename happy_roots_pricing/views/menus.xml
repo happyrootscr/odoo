@@ -1,26 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <!-- ═══════════════════════════════════════════════════════════════════
-         MENÚ PRINCIPAL — Happy Roots Pricing
-         ═══════════════════════════════════════════════════════════════════ -->
     <menuitem id="menu_hr_pricing_root"
               name="Happy Roots Pricing"
               sequence="50"
               web_icon="happy_roots_pricing,static/description/icon.png"/>
 
-    <!-- ── RESUMEN EJECUTIVO (Dashboard) ────────────────────────────────── -->
+    <!-- ── RESUMEN EJECUTIVO ─────────────────────────────────────────────── -->
     <menuitem id="menu_hr_pricing_summary"
               name="📊 Resumen Ejecutivo"
               parent="menu_hr_pricing_root"
               action="action_hr_product_combo"
               sequence="10"/>
 
-    <!-- ── CONFIGURACIÓN ──────────────────────────────────────────────── -->
+    <!-- ── EXPORTACIONES / DESTINOS ──────────────────────────────────────── -->
+    <menuitem id="menu_hr_export_root"
+              name="🌎 Exportaciones"
+              parent="menu_hr_pricing_root"
+              sequence="20"/>
+
+    <menuitem id="menu_hr_destination"
+              name="Destinos y Mercados"
+              parent="menu_hr_export_root"
+              action="action_hr_destination"
+              sequence="10"/>
+
+    <menuitem id="menu_hr_benchmark"
+              name="Benchmark Competidores USA"
+              parent="menu_hr_export_root"
+              action="action_hr_benchmark"
+              sequence="20"/>
+
+    <!-- ── HERRAMIENTAS ───────────────────────────────────────────────────── -->
+    <menuitem id="menu_hr_pricing_tools"
+              name="🧰 Herramientas"
+              parent="menu_hr_pricing_root"
+              sequence="30"/>
+
+    <menuitem id="menu_hr_scenario"
+              name="Simulador de Escenarios"
+              parent="menu_hr_pricing_tools"
+              action="action_hr_scenario_wizard"
+              sequence="10"/>
+
+    <menuitem id="menu_hr_container_sim"
+              name="Simulador de Contenedor"
+              parent="menu_hr_pricing_tools"
+              action="action_hr_container_sim"
+              sequence="30"/>
+
+    <!-- ── CONFIGURACIÓN ─────────────────────────────────────────────────── -->
     <menuitem id="menu_hr_pricing_config_root"
               name="⚙ Configuración"
               parent="menu_hr_pricing_root"
-              sequence="20"/>
+              sequence="40"/>
 
     <menuitem id="menu_hr_pricing_config"
               name="Supuestos Globales"
@@ -39,41 +71,5 @@
               parent="menu_hr_pricing_config_root"
               action="action_hr_product_base"
               sequence="30"/>
-
-    <!-- ── HERRAMIENTAS ────────────────────────────────────────────────── -->
-    <menuitem id="menu_hr_pricing_tools"
-              name="🧰 Herramientas"
-              parent="menu_hr_pricing_root"
-              sequence="30"/>
-
-    <menuitem id="menu_hr_scenario"
-              name="Simulador de Escenarios"
-              parent="menu_hr_pricing_tools"
-              action="action_hr_scenario_wizard"
-              sequence="10"/>
-
-    <menuitem id="menu_hr_pricelist_push"
-              name="Sincronizar con Pricelists Odoo"
-              parent="menu_hr_pricing_tools"
-              action="action_hr_pricelist_push"
-              sequence="20"/>
-
-    <menuitem id="menu_hr_container_sim"
-              name="Simulador de Contenedor"
-              parent="menu_hr_pricing_tools"
-              action="action_hr_container_sim"
-              sequence="30"/>
-
-    <!-- ── MERCADO ─────────────────────────────────────────────────────── -->
-    <menuitem id="menu_hr_pricing_market"
-              name="🇺🇸 Mercado USA"
-              parent="menu_hr_pricing_root"
-              sequence="40"/>
-
-    <menuitem id="menu_hr_benchmark"
-              name="Benchmark Competidores"
-              parent="menu_hr_pricing_market"
-              action="action_hr_benchmark"
-              sequence="10"/>
 
 </odoo>

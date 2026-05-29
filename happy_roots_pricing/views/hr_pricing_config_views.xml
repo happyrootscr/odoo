@@ -10,14 +10,18 @@
         <field name="arch" type="xml">
             <form string="Supuestos Globales de Pricing">
                 <header>
+                    <button name="action_initial_setup"
+                            type="object"
+                            string="⚙ Setup Inicial (correr 1 vez)"
+                            class="btn-primary"
+                            confirm="Crea productos, precios por destino y pricelists automáticamente. ¿Continuar?"/>
                     <button name="action_recalculate_all"
                             type="object"
-                            string="🔄 Recalcular todos los combos"
-                            class="btn-primary"
-                            confirm="¿Desea recalcular los precios de todos los combos activos con estos supuestos?"/>
+                            string="🔄 Forzar recálculo completo"
+                            class="btn-secondary"/>
                     <button name="action_open_scenario_wizard"
                             type="object"
-                            string="🧮 Simular escenario what-if"
+                            string="🧮 Simular escenario"
                             class="btn-secondary"/>
                 </header>
                 <sheet>
@@ -82,10 +86,23 @@
                                     <field name="threePL_name"/>
                                 </group>
                             </group>
-                            <group string="Empaque terciario">
+                            <group string="Empaque terciario (tarimas)">
                                 <group>
                                     <field name="pallet_cost_usd"/>
                                     <field name="pallets_per_container"/>
+                                </group>
+                            </group>
+                            <group string="Empaque primario — Bolsas INDELSA">
+                                <group>
+                                    <field name="bag_film_price_usd_per_kg"/>
+                                </group>
+                                <group>
+                                    <div class="alert alert-info" role="alert">
+                                        <strong>INDELSA — Industrias Elegantes S.A.</strong><br/>
+                                        Precio único $10/kg + IVA para todos los formatos.<br/>
+                                        Costo/bolsa = <strong>$10 ÷ rendimiento</strong>.<br/>
+                                        63 micras (BOPP 20/BOPP40): 150 bolsas/kg → <strong>$0.0667/bolsa</strong>.
+                                    </div>
                                 </group>
                             </group>
                         </page>

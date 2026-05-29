@@ -4,4 +4,7 @@ from . import hr_product_base
 from . import hr_product_combo
 from . import hr_container_sim
 from . import hr_benchmark
+from . import hr_destination
+from . import hr_bom_sync
 from . import product_template
+from . import hr_sale_ext

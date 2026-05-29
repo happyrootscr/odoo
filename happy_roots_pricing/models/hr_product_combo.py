@@ -197,7 +197,7 @@ class HrProductCombo(models.Model):
             )
             bag_usd = rec.base_id.bag_cost_usd
             seasoning_usd = (
-                rec.seasoning_id.price_per_kg_usd * rec.dosification_kg_per_bag
+                rec.seasoning_id.price_per_kg_usd * rec.dosification_kg_per_bag * weight_kg
             )
             box_usd = (
                 rec.base_id.box_cost_usd / rec.base_id.bags_per_box
@@ -319,17 +319,109 @@ class HrProductCombo(models.Model):
     def name_get(self):
         return [(rec.id, rec.display_name_full) for rec in self]
 
-    def action_push_to_pricelists(self):
-        """Abre el wizard para sincronizar precios con listas de precios de Odoo."""
+    @api.model
+    def create(self, vals):
+        record = super().create(vals)
+        if record.state == 'active':
+            record._ensure_product_variant()
+            record._ensure_destination_prices()
+        return record
+
+    def write(self, vals):
+        res = super().write(vals)
+        # No ejecutar durante carga de datos de módulo (evita errores en instalación)
+        if self.env.context.get('install_mode') or self.env.context.get('load_ir_module_module'):
+            return res
+        if vals.get('state') == 'active':
+            for rec in self:
+                try:
+                    rec._ensure_product_variant()
+                    rec._ensure_destination_prices()
+                except Exception:
+                    pass  # No bloquear guardado por errores de integración
+        # Sync standard_price on product when EXW changes
+        if 'price_exw' in vals:
+            for rec in self.filtered(lambda r: r.product_id):
+                try:
+                    rec.product_id.product_tmpl_id.standard_price = rec.price_exw
+                except Exception:
+                    pass
+        return res
+
+    def _ensure_product_variant(self):
+        """
+        Crea o vincula automáticamente el product.product (variante Odoo)
+        para este combo. Sin este vínculo no hay pricelists ni BoM.
+        """
         self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Sincronizar con listas de precios',
-            'res_model': 'hr.pricelist.push.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {'default_combo_ids': [(6, 0, self.ids)]},
-        }
+        if self.product_id:
+            return
+
+        ProductTmpl = self.env['product.template']
+        ProductProd = self.env['product.product']
+
+        # Buscar o crear product.template para el SKU base
+        tmpl = self.base_id.product_template_id
+        if not tmpl:
+            tmpl = ProductTmpl.create({
+                'name': self.base_id.name,
+                'type': 'consu',
+                'sale_ok': True,
+                'purchase_ok': False,
+                'standard_price': self.price_exw,
+                'list_price': self.price_msrp or 0.0,
+            })
+            self.base_id.product_template_id = tmpl
+
+        # Buscar variante existente por nombre exacto
+        existing = ProductProd.search([
+            ('product_tmpl_id', '=', tmpl.id),
+            ('display_name', 'ilike', self.name),
+        ], limit=1)
+
+        if not existing:
+            # Si el template tiene una sola variante genérica, renombrarla o crear nueva
+            if tmpl.product_variant_count == 1:
+                variant = tmpl.product_variant_id
+                # Solo usar esta variante si no está ya ocupada por otro combo
+                other_combo = self.search([
+                    ('product_id', '=', variant.id),
+                    ('id', '!=', self.id),
+                ], limit=1)
+                if not other_combo:
+                    existing = variant
+
+        if not existing:
+            # Crear un template propio para este combo
+            combo_tmpl = ProductTmpl.create({
+                'name': self.display_name_full or self.name,
+                'type': 'consu',
+                'sale_ok': True,
+                'purchase_ok': False,
+                'standard_price': self.price_exw,
+                'list_price': self.price_msrp or 0.0,
+            })
+            existing = combo_tmpl.product_variant_id
+
+        self.product_id = existing
+
+    def _ensure_destination_prices(self):
+        """
+        Crea registros hr.destination.price para este combo en todos los destinos activos.
+        Los precios se calculan automáticamente vía @api.depends.
+        """
+        self.ensure_one()
+        DestPrice = self.env['hr.destination.price']
+        destinations = self.env['hr.destination'].search([('active', '=', True)])
+        existing_dest_ids = set(
+            DestPrice.search([('combo_id', '=', self.id)]).mapped('destination_id').ids
+        )
+        to_create = [
+            {'destination_id': d.id, 'combo_id': self.id}
+            for d in destinations if d.id not in existing_dest_ids
+        ]
+        if to_create:
+            DestPrice.create(to_create)
 
     def action_view_product(self):
         self.ensure_one()

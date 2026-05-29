@@ -35,6 +35,14 @@ class HrPricingConfig(models.Model):
         'Tarimas por contenedor', default=22,
         help='Configuración estándar ADM Don Mariano para contenedor 40HC.')
 
+    # ─── 2b. EMPAQUE PRIMARIO — BOLSAS INDELSA ────────────────────────────────
+    bag_film_price_usd_per_kg = fields.Float(
+        'Precio film bolsa INDELSA (USD/kg)', default=10.0, digits=(10, 4),
+        help='Precio por kilogramo de film BOPP de INDELSA (Industrias Elegantes S.A.). '
+             'Aplica igual a todos los formatos. '
+             'Costo/bolsa = precio_film ÷ rendimiento_bolsa (bolsas/kg). '
+             'Cotización CR Farm — mayo 2026. Mínimo 100 kg ±10%.')
+
     # ─── 3. LOGÍSTICA ORIGEN (Costa Rica) ─────────────────────────────────────
     trucking_origin_usd = fields.Float(
         'Trucking Sarapiquí → Puerto Limón (USD/cont.)', default=500.0, digits=(10, 2),
@@ -174,21 +182,137 @@ class HrPricingConfig(models.Model):
             config = self.create({'name': 'Configuración Global'})
         return config
 
+    def write(self, vals):
+        res = super().write(vals)
+        # Cuando cambia cualquier supuesto que afecte precios, recomputa todo automáticamente
+        # Cuando cambia el precio de film, actualizar costo de bolsa en todas las bases
+        if 'bag_film_price_usd_per_kg' in vals:
+            new_price = vals['bag_film_price_usd_per_kg']
+            bases = self.env['hr.product.base'].search([('bag_rendimiento', '>', 0)])
+            for base in bases:
+                base.bag_cost_usd = new_price / base.bag_rendimiento
+
+        price_affecting = {
+            'exchange_rate_crc_usd', 'pallet_cost_usd', 'pallets_per_container',
+            'trucking_origin_usd', 'handling_port_usd', 'documentation_usd',
+            'freight_maritime_usd', 'insurance_pct', 'trucking_destination_usd',
+            'cafta_duty_pct', 'section_122_active', 'section_122_pct',
+            'hmf_pct', 'mpf_exempt', 'broker_fda_isf_usd', 'entry_bond_usd',
+            'margin_hr_pct', 'margin_retailer_pct', 'distributor_discount_pct',
+            'dtc_fees_pct', 'dtc_margin_target_pct', 'bag_film_price_usd_per_kg',
+        }
+        if price_affecting & set(vals.keys()):
+            combos = self.env['hr.product.combo'].search([('state', '=', 'active')])
+            if combos:
+                combos._compute_all_prices()
+            # Los precios de destino dependen de combo.price_fob via @api.depends,
+            # pero también de los márgenes del config. Los recomputamos explícitamente.
+            dest_prices = self.env['hr.destination.price'].search([])
+            if dest_prices:
+                dest_prices._compute_prices()
+                # Sincronizar pricelists con los nuevos precios
+                dest_prices._auto_sync_pricelists()
+        return res
+
     def action_recalculate_all(self):
-        """Fuerza recálculo de todos los combos activos cuando cambian supuestos."""
+        """Recálculo manual completo: combos + destinos + pricelists."""
         self.ensure_one()
         combos = self.env['hr.product.combo'].search([('state', '=', 'active')])
         combos._compute_all_prices()
+        dest_prices = self.env['hr.destination.price'].search([])
+        dest_prices._compute_prices()
+        dest_prices._auto_sync_pricelists()
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
             'params': {
                 'title': 'Recálculo completado',
-                'message': f'{len(combos)} combos actualizados con los nuevos supuestos.',
+                'message': f'{len(combos)} combos · {len(dest_prices)} precios destino · pricelists actualizadas.',
                 'type': 'success',
                 'sticky': False,
             },
         }
+
+    def action_initial_setup(self):
+        """
+        Configuración inicial — corre UNA VEZ después de instalar el módulo.
+        1. Crea product.product para cada combo activo
+        2. Crea hr.destination.price para cada combo × destino
+        3. Sincroniza todas las pricelists
+        4. Crea BoMs si mrp está instalado
+        """
+        self.ensure_one()
+        combos = self.env['hr.product.combo'].search([('state', '=', 'active')])
+        n_products = 0
+        for combo in combos:
+            if not combo.product_id:
+                combo._ensure_product_variant()
+                n_products += 1
+            combo._ensure_destination_prices()
+
+        # Recomputar y sincronizar
+        combos._compute_all_prices()
+        dest_prices = self.env['hr.destination.price'].search([])
+        dest_prices._compute_prices()
+        dest_prices._auto_sync_pricelists()
+
+        # BoMs si mrp está instalado
+        n_boms = 0
+        mrp_installed = self.env['ir.module.module'].search_count([
+            ('name', '=', 'mrp'), ('state', '=', 'installed')
+        ])
+        if mrp_installed:
+            for combo in combos:
+                if combo.product_id:
+                    combo._ensure_bom()
+                    n_boms += 1
+
+        msg = (
+            f'Setup completado: {n_products} productos creados · '
+            f'{len(dest_prices)} precios por destino · '
+            f'{n_boms} BoMs generadas'
+        )
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {'title': 'Setup inicial OK', 'message': msg,
+                       'type': 'success', 'sticky': True},
+        }
+
+    @api.model
+    def _cron_check_section_122(self):
+        """
+        Cron diario: alerta automática cuando Section 122 vence en 30 días.
+        Envía notificación interna al grupo de pricing managers.
+        """
+        from datetime import date, timedelta
+        config = self.get_config()
+        if not config.section_122_active or not config.section_122_expiry:
+            return
+
+        today = date.today()
+        expiry = config.section_122_expiry
+        days_left = (expiry - today).days
+
+        if 0 <= days_left <= 30:
+            managers = self.env.ref(
+                'happy_roots_pricing.group_hr_pricing_manager',
+                raise_if_not_found=False)
+            if not managers:
+                return
+            users = managers.users
+            msg = (
+                f'⚠️ Section 122 vence en {days_left} días ({expiry}). '
+                f'Cuando venza, deshabilita "Section 122 activo" en Supuestos Globales. '
+                f'Odoo recalculará todos los precios automáticamente.'
+            )
+            for user in users:
+                self.env['mail.message'].create({
+                    'message_type': 'notification',
+                    'body': msg,
+                    'partner_ids': [(4, user.partner_id.id)],
+                    'subtype_id': self.env.ref('mail.mt_note').id,
+                })
 
     def action_open_scenario_wizard(self):
         """Abre el wizard de simulación de escenarios."""

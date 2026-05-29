@@ -2,8 +2,11 @@
 <odoo>
     <data noupdate="0">
         <!-- ══════════════════════════════════════════════════════════════════
-             SKUs BASE — 4 formatos físicos Happy Roots
-             Fuente: Cotización Don Mariano ADM + Indupark + tabla ADM (abril 2026)
+             SKUs BASE — 5 formatos físicos Happy Roots
+             Maquila: ADM Don Mariano (cotización abril 2026)
+             Bolsas:  INDELSA — Industrias Elegantes S.A. (mayo 2026)
+                      Precio film: $10.00/kg · 63 micras BOPP 20/BOPP40
+                      Bobina 305mm×370mm → 150 bolsas/kg → $0.066667/bolsa
              ══════════════════════════════════════════════════════════════════ -->
 
         <!-- YUCA 126g -->
@@ -18,9 +21,10 @@
             <field name="maquila_quotation_date">2026-04-01</field>
             <field name="maquila_notes">Yuca tostada redonda · incluye sal base · sin IVA · contado</field>
 
-            <!-- Bolsas Indupark -->
-            <field name="bag_cost_usd">0.04242</field>
-            <field name="bag_dimensions">160×230mm · BOPP MATE 17u</field>
+            <!-- Bolsas INDELSA — 63 micras BOPP 20/BOPP40 · $10/kg · 150 bolsas/kg -->
+            <field name="bag_rendimiento">150</field>
+            <field name="bag_cost_usd">0.066667</field>
+            <field name="bag_dimensions">305mm bobina × 370mm · 63 micras BOPP 20/BOPP40 · INDELSA</field>
 
             <!-- Cajas ADM -->
             <field name="box_cost_usd">1.09</field>
@@ -47,8 +51,10 @@
             <field name="maquila_quotation_date">2026-04-01</field>
             <field name="maquila_notes">Plátano verde redondo · incluye sal base · sin IVA · contado</field>
 
-            <field name="bag_cost_usd">0.04242</field>
-            <field name="bag_dimensions">160×230mm · BOPP MATE 17u</field>
+            <!-- Bolsas INDELSA — 63 micras BOPP 20/BOPP40 · $10/kg · 150 bolsas/kg -->
+            <field name="bag_rendimiento">150</field>
+            <field name="bag_cost_usd">0.066667</field>
+            <field name="bag_dimensions">305mm bobina × 370mm · 63 micras BOPP 20/BOPP40 · INDELSA</field>
 
             <field name="box_cost_usd">1.09</field>
             <field name="bags_per_box">18</field>
@@ -72,8 +78,10 @@
             <field name="maquila_quotation_date">2026-04-01</field>
             <field name="maquila_notes">Mix tubérculos: taro + camote anaranjado + camote morado + yuca · incluye sal base</field>
 
-            <field name="bag_cost_usd">0.04242</field>
-            <field name="bag_dimensions">160×230mm · BOPP MATE 17u</field>
+            <!-- Bolsas INDELSA — 63 micras BOPP 20/BOPP40 · $10/kg · 150 bolsas/kg -->
+            <field name="bag_rendimiento">150</field>
+            <field name="bag_cost_usd">0.066667</field>
+            <field name="bag_dimensions">305mm bobina × 370mm · 63 micras BOPP 20/BOPP40 · INDELSA</field>
 
             <field name="box_cost_usd">1.09</field>
             <field name="bags_per_box">18</field>
@@ -86,7 +94,7 @@
             </field>
         </record>
 
-        <!-- MIXTO 340g -->
+        <!-- MIXTO 340g — EN PAUSA (por ahora solo se trabaja formato 155g) -->
         <record id="base_mixto_340g" model="hr.product.base">
             <field name="name">Mixto 340g</field>
             <field name="format_weight_g">340</field>
@@ -95,10 +103,12 @@
             <field name="maquila_cost_crc_per_kg">4500.0</field>
             <field name="maquila_confirmed">True</field>
             <field name="maquila_quotation_date">2026-04-01</field>
-            <field name="maquila_notes">Mix tubérculos formato familiar · CONFIRMADO Don Mariano abril 2026 (reemplaza ₡7,500 typo y ₡3,850 estimación previa)</field>
+            <field name="maquila_notes">Mix tubérculos formato familiar · CONFIRMADO Don Mariano abril 2026</field>
 
-            <field name="bag_cost_usd">0.05135</field>
-            <field name="bag_dimensions">170×280mm · BOPP MATE 17u</field>
+            <!-- Bolsas INDELSA — rendimiento pendiente de cotización para formato 200mm×350mm -->
+            <field name="bag_rendimiento">0</field>
+            <field name="bag_cost_usd">0.066667</field>
+            <field name="bag_dimensions">200mm × 350mm · 63 micras BOPP 20/BOPP40 · INDELSA (rendimiento por confirmar)</field>
 
             <!-- Caja Shipper display (diseñada para góndola retail) -->
             <field name="box_cost_usd">1.79</field>
@@ -106,10 +116,40 @@
             <field name="bags_per_container">7920</field>
 
             <field name="channel_recommendation">
+                EN PAUSA — formato 340g en revisión. Trabajando con 155g por ahora.
                 Premium shelf — formato familiar para natural channel y club stores.
-                DDP más alto por bolsa pero MSRP también premium ($13.50+).
                 Canal DTC (Amazon) muy viable para este formato.
-                Caja Shipper = también funciona como display en góndola sin desempacar.
+                PENDIENTE: confirmar rendimiento INDELSA para bobina 200mm×350mm.
+            </field>
+        </record>
+
+        <!-- MIXTO 155g — NUEVO (mayo 2026) -->
+        <record id="base_mixto_155g" model="hr.product.base">
+            <field name="name">Mixto 155g</field>
+            <field name="format_weight_g">155</field>
+            <field name="box_type">normal</field>
+
+            <!-- Maquila ADM — confirmado mayo 2026 -->
+            <field name="maquila_cost_crc_per_kg">4500.0</field>
+            <field name="maquila_confirmed">True</field>
+            <field name="maquila_quotation_date">2026-05-20</field>
+            <field name="maquila_notes">Mix tubérculos 155g · ₡4,500/kg confirmado ADM Don Mariano mayo 2026</field>
+
+            <!-- Bolsas INDELSA — 63 micras BOPP 20/BOPP40 · $10/kg · 160 bolsas/kg -->
+            <field name="bag_rendimiento">160</field>
+            <field name="bag_cost_usd">0.0625</field>
+            <field name="bag_dimensions">63 micras BOPP 20/BOPP40 · INDELSA (bobina por confirmar)</field>
+
+            <!-- Cajas — estimado mayo 2026. Confirmar configuración con ADM Don Mariano -->
+            <field name="box_cost_usd">1.09</field>
+            <field name="bags_per_box">18</field>
+            <field name="bags_per_container">27720</field>
+
+            <field name="channel_recommendation">
+                Mix tubérculos formato mediano 155g — formato principal del portafolio mix (mayo 2026).
+                Bolsa 63 micras INDELSA · $10/kg ÷ 160 bolsas/kg = $0.0625/bolsa.
+                Canal 1 priority: Whole Foods, Sprouts, Thrive Market (formato mediano ideal).
+                PENDIENTE: confirmar bolsas/contenedor con ADM (estimado 27,720 = 18×70×22 pallets).
             </field>
         </record>
 
